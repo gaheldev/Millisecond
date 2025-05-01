@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="proaudio-setup">
+	<schema id="io.github.gaheldev.ProAudioSetup" path="/io/github/gaheldev/ProAudioSetup/">
+	</schema>
+</schemalist>

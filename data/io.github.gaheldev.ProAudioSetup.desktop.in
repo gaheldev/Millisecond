@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=proaudio-setup
+Exec=proaudio-setup
+Icon=io.github.gaheldev.ProAudioSetup
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
