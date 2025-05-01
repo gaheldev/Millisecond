@@ -25,6 +25,7 @@ gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, Adw
 from .window import ProaudioSetupWindow
+from .rtcqs import Rtcqs
 
 
 class ProaudioSetupApplication(Adw.Application):
@@ -82,5 +83,6 @@ class ProaudioSetupApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
+    Rtcqs().main()
     app = ProaudioSetupApplication()
     return app.run(sys.argv)

@@ -30,6 +30,7 @@ proaudio_setup_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'rtcqs.py',
 ]
 
 install_data(proaudio_setup_sources, install_dir: moduledir)
