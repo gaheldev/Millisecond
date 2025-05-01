@@ -8,8 +8,12 @@
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
-        "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--filesystem=host",
+        "--filesystem=/boot",
+        "--filesystem=/sys",
+        "--device=all",
+        "--filesystem=/proc:ro"
     ],
     "cleanup" : [
         "/include",
