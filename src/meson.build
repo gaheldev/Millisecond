@@ -30,6 +30,7 @@ proaudio_setup_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'diagnostic.py',
   'rtcqs.py',
 ]
 

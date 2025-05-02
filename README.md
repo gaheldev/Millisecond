@@ -4,15 +4,15 @@
     - [ ] in README + current version
     - [ ] in app
 - [ ] link to full doc
-- [ ] expanding row with:
-    - [ ] check emoji
-    - [ ] Title from rtcqs
+- [x] expanding row with:
+    - [x] check emoji
+    - [x] Title from rtcqs
     - [ ] Subtitle ?
-    - [ ] autofix button if autofix implemented
-    - [ ] info emoji for doc
-    - [ ] expandable area with rtcqs output
-- [ ] group by importance? by type?
-- [ ] only close button
+    - [x] autofix button if autofix implemented
+    - [x] info emoji for doc
+    - [x] expandable area with rtcqs output
+- [x] group by importance? by type?
+- [x] only close button
 - [ ] autofix
     - [ ] audio group
     - [ ] preempt=full
