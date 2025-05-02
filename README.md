@@ -32,6 +32,7 @@ dh_make --createorig -p proaudio-setup_0.1.0
 ```
 
 ## TODO
+### GUI
 - [ ] contact rtcqs author
 
 - [ ] pick license (GPL by default, rtcqs is MIT)
@@ -41,7 +42,8 @@ dh_make --createorig -p proaudio-setup_0.1.0
 - [ ] icons
 - [ ] make flatpak distributable
     - [x] set up basic export
-    - [ ] properly require runner / system dependencies
+    - [x] properly require runner / system dependencies
+    - [ ] setup for flathub
 
 - [ ] Readme
 - [ ] Credit rtcqs
@@ -61,7 +63,10 @@ dh_make --createorig -p proaudio-setup_0.1.0
 - [ ] warning or error depending on importance of diagnostic
 - [x] only close button
 - [ ] autofix
-    - [ ] audio group
-    - [ ] preempt=full
 
 - [ ] Handle case where kernel configuration is not found
+
+### rtcqs
+- [ ] autofix
+    - [ ] audio group
+    - [ ] preempt=full
