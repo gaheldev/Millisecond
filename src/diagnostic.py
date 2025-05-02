@@ -35,6 +35,7 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.info_button.set_margin_top(8)
         self.info_button.set_margin_bottom(8)
         self.info_button.set_uri(self.wiki_link())
+        self.info_button.set_tooltip_text("Open Wiki" if self.wiki_anchor is not None else "No related Wiki")
         self.info_button.set_icon_name("dialog-question-symbolic")
         self.info_button.set_sensitive(self.wiki_anchor is not None)
         self.add_suffix(self.info_button)
@@ -44,6 +45,7 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.fix_button.add_css_class("circular")
         self.fix_button.set_margin_top(8)
         self.fix_button.set_margin_bottom(8)
+        self.fix_button.set_tooltip_text("fix not implemented")
         self.fix_button.set_icon_name("applications-engineering-symbolic")
         self.fix_button.set_sensitive(False) # no autofix implemented yet
         self.add_suffix(self.fix_button)
@@ -81,3 +83,4 @@ class DiagnosticRow(Adw.ExpanderRow):
     def update_check(self):
         self.check_icon.set_from_icon_name(self.ok_icon if self.status() else self.warning_icon)
         self.check_icon.add_css_class("success" if self.status() else "warning")
+        self.check_icon.set_tooltip_text("Optimized" if self.status() else "Unoptimized")
