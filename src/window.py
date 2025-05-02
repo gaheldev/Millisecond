@@ -17,16 +17,17 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Adw, Gtk
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
+from .rtfix import SwappinessDialog
 
 @Gtk.Template(resource_path='/io/github/gaheldev/ProAudioSetup/window.ui')
 class ProaudioSetupWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ProaudioSetupWindow'
 
+    refresh_button = Gtk.Template.Child("refresh-button")
     main_box = Gtk.Template.Child()
     preferences_page = Gtk.Template.Child()
     explanations_group = Gtk.Template.Child()
@@ -34,7 +35,6 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
     cpu_group = Gtk.Template.Child()
     kernel_group = Gtk.Template.Child()
     io_group = Gtk.Template.Child()
-    diagnostic_row = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -62,62 +62,76 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
         self.user_group = Adw.PreferencesGroup()
         self.user_group.set_title("User")
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "root")
-        self.user_group.add(self.diagnostic_row)
+        self.root_diagnostic_row = DiagnosticRow(self, self.rtcqs, "root")
+        self.root_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.user_group.add(self.root_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "audio_group", "#audio_group")
-        self.user_group.add(self.diagnostic_row)
+        self.group_diagnostic_row = DiagnosticRow(self, self.rtcqs, "audio_group", "#audio_group")
+        self.group_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.user_group.add(self.group_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "rt_prio", "#limitsconfaudioconf")
-        self.user_group.add(self.diagnostic_row)
+        self.rt_prio_diagnostic_row = DiagnosticRow(self, self.rtcqs, "rt_prio", "#limitsconfaudioconf")
+        self.rt_prio_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.user_group.add(self.rt_prio_diagnostic_row)
 
         # CPU diagnostics
 
         self.cpu_group = Adw.PreferencesGroup()
         self.cpu_group.set_title("CPU")
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "governor", "#cpu_frequency_scaling")
-        self.cpu_group.add(self.diagnostic_row)
+        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling")
+        self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.cpu_group.add(self.governor_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "smt", "#Simultaneous_threading")
-        self.cpu_group.add(self.diagnostic_row)
+        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", "#Simultaneous_threading")
+        self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.cpu_group.add(self.smt_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "power_management", "#quality_of_service_interface")
-        self.cpu_group.add(self.diagnostic_row)
+        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface")
+        self.power_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.cpu_group.add(self.power_diagnostic_row)
 
         # Kernel diagnostics
 
         self.kernel_group = Adw.PreferencesGroup()
         self.kernel_group.set_title("Kernel")
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "kernel_config")
-        self.kernel_group.add(self.diagnostic_row)
+        self.kernel_diagnostic_row = DiagnosticRow(self, self.rtcqs, "kernel_config")
+        self.kernel_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.kernel_group.add(self.kernel_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "high_res_timers", "#installing_a_real-time_kernel")
-        self.kernel_group.add(self.diagnostic_row)
+        self.timers_diagnostic_row = DiagnosticRow(self, self.rtcqs, "high_res_timers", "#installing_a_real-time_kernel")
+        self.timers_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.kernel_group.add(self.timers_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "tickless", "#installing_a_real-time_kernel")
-        self.kernel_group.add(self.diagnostic_row)
+        self.tickless_diagnostic_row = DiagnosticRow(self, self.rtcqs, "tickless", "#installing_a_real-time_kernel")
+        self.tickless_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.kernel_group.add(self.tickless_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "preempt_rt", "#do_i_really_need_a_real-time_kernel")
-        self.kernel_group.add(self.diagnostic_row)
+        self.preempt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "preempt_rt", "#do_i_really_need_a_real-time_kernel")
+        self.preempt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.kernel_group.add(self.preempt_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "mitigations", "#disabling_spectre_and_meltdown_mitigations")
-        self.kernel_group.add(self.diagnostic_row)
+        self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations", "#disabling_spectre_and_meltdown_mitigations")
+        self.mitigations_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.kernel_group.add(self.mitigations_diagnostic_row)
 
         # I/O diagnostics
 
         self.io_group = Adw.PreferencesGroup()
         self.io_group.set_title("I/O")
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "swappiness", "#sysctlconf")
-        self.io_group.add(self.diagnostic_row)
+        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf", SwappinessDialog())
+        self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.io_group.add(self.swap_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "filesystems", "#filesystems")
-        self.io_group.add(self.diagnostic_row)
+        self.filesystems_diagnostic_row = DiagnosticRow(self, self.rtcqs, "filesystems", "#filesystems")
+        self.filesystems_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.io_group.add(self.filesystems_diagnostic_row)
 
-        self.diagnostic_row = DiagnosticRow(self.rtcqs, "irqs")
-        self.io_group.add(self.diagnostic_row)
+        self.irqs_diagnostic_row = DiagnosticRow(self, self.rtcqs, "irqs")
+        self.irqs_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.io_group.add(self.irqs_diagnostic_row)
 
         # self.preferences_page.add(self.explanations_group)
         self.preferences_page.add(self.user_group)
@@ -127,6 +141,19 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
 
         self.main_box.append(self.preferences_page)
 
+    @Gtk.Template.Callback()
+    def on_refresh_button_clicked(self, _):
+        self.refresh()
+
     def set_rtcqs(self, value):
         self.rtcqs = value
         self.rtcqs.main()
+
+    def _on_diagnostic_updated(self, _):
+        self.refresh()
+
+    def refresh(self):
+        self.rtcqs.main()
+        diagnostics = [var for var in vars(self).values() if isinstance(var,DiagnosticRow)]
+        for diag in diagnostics:
+            diag.refresh()

@@ -10,10 +10,12 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--filesystem=host",
+        "--filesystem=host-etc",
         "--filesystem=/boot",
         "--filesystem=/sys",
         "--device=all",
-        "--filesystem=/proc:ro"
+        "--filesystem=/proc:ro",
+	"--talk-name=org.freedesktop.Flatpak"
     ],
     "cleanup" : [
         "/include",

@@ -50,6 +50,9 @@ dh_make --createorig -p proaudio-setup_0.1.0
     - [ ] in README + current version
     - [x] in app
 
+- [x] refresh diagnostic on fix
+- [x] refresh all button
+- [x] refresh diagnostics on refresh all
 - [ ] In-app explanations
 - [ ] link to full doc
 - [x] expanding row with:
@@ -62,11 +65,16 @@ dh_make --createorig -p proaudio-setup_0.1.0
 - [x] group by importance? by type?
 - [ ] warning or error depending on importance of diagnostic
 - [x] only close button
-- [ ] autofix
+- [x] autofix
 
 - [ ] Handle case where kernel configuration is not found
 
-### rtcqs
+### rtfix
 - [ ] autofix
     - [ ] audio group
     - [ ] preempt=full
+    - [x] swappiness `sysctl -p` to update
+- [ ] tests
+    - [ ] swappiness
+
+
