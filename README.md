@@ -7,6 +7,13 @@ Use [gnome-builder](https://flathub.org/apps/org.gnome.Builder)
 - [x] Need access to system to perform checks (see [sandbox permissions](https://docs.flatpak.org/en/latest/sandbox-permissions.html))
 - [ ] Fix /proc access?
 
+```bash
+# add flathup
+flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+# may have to manually install sdk 48 if not working from builder
+flatpak install org.gnome.Sdk/x86_64/48
+```
+
 ## Direct compilation/installation
 
 ```

@@ -1,7 +1,7 @@
 {
     "id" : "io.github.gaheldev.ProAudioSetup",
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime" : "org.gnome.Sdk",
+    "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
     "command" : "proaudio-setup",
     "finish-args" : [
@@ -36,7 +36,13 @@
                     "type" : "git",
                     "url" : "file:///home/gael/code/audio/system-stuff"
                 }
+            ],
+            "config-opts" : [
+                "--libdir=lib"
             ]
         }
-    ]
+    ],
+    "build-options" : {
+        "env" : {        }
+    }
 }
