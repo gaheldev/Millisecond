@@ -71,13 +71,22 @@ class MillisecondWindow(Adw.ApplicationWindow):
 
         self.preferences_page = Adw.PreferencesPage()
 
-        # Explanations and disclaimers
+        # Explanations and wiki link
 
         self.explanations_group = Adw.PreferencesGroup()
 
         self.explanations = Gtk.Label()
-        self.explanations.set_text("coucou")
+        text = 'Identify and fix possible bottlenecks that could have a negative impact on the performance of your system when working with Linux audio.'
+        self.explanations.set_label(text)
+        self.explanations.set_wrap(True)
+        self.explanations.add_css_class("dimmed")
         self.explanations_group.add(self.explanations)
+
+        self.linuxaudio_link = Gtk.LinkButton()
+        self.linuxaudio_link.set_uri("https://wiki.linuxaudio.org/wiki/system_configuration")
+        self.linuxaudio_link.set_label("linuxaudio wiki")
+        self.linuxaudio_link.add_css_class("dimmed")
+        self.explanations_group.add(self.linuxaudio_link)
 
         # User diagnostics
 
@@ -150,7 +159,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.irqs_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.irqs_diagnostic_row)
 
-        # self.preferences_page.add(self.explanations_group)
+        self.preferences_page.add(self.explanations_group)
         self.preferences_page.add(self.user_group)
         self.preferences_page.add(self.cpu_group)
         self.preferences_page.add(self.kernel_group)
