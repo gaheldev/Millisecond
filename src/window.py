@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gtk, GObject
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
@@ -26,6 +26,8 @@ from .rtfix import SwappinessDialog
 @Gtk.Template(resource_path='/io/github/gaheldev/ProAudioSetup/window.ui')
 class ProaudioSetupWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ProaudioSetupWindow'
+
+    quit = GObject.Signal("quit")
 
     refresh_button = Gtk.Template.Child("refresh-button")
     main_box = Gtk.Template.Child()
@@ -47,6 +49,16 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.toolbar_view.set_content(self.main_box)
 
+        # banner warning if application is run as root
+        if not self.rtcqs.status["root"]:
+            self.root_banner = Adw.Banner()
+            self.root_banner.set_title("You are running this as root, please restart as regular user for reliable results.")
+            self.root_banner.set_revealed(True)
+            self.root_banner.add_css_class("error")
+            self.root_banner.set_button_label("Quit")
+            self.root_banner.connect("button-clicked", lambda *_: self.quit.emit())
+            self.main_box.append(self.root_banner)
+
         self.preferences_page = Adw.PreferencesPage()
 
         # Explanations and disclaimers
@@ -61,10 +73,6 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
 
         self.user_group = Adw.PreferencesGroup()
         self.user_group.set_title("User")
-
-        self.root_diagnostic_row = DiagnosticRow(self, self.rtcqs, "root")
-        self.root_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.user_group.add(self.root_diagnostic_row)
 
         self.group_diagnostic_row = DiagnosticRow(self, self.rtcqs, "audio_group", "#audio_group")
         self.group_diagnostic_row.updated.connect(self._on_diagnostic_updated)

@@ -47,6 +47,7 @@ class ProaudioSetupApplication(Adw.Application):
         win = self.props.active_window
         if not win:
             win = ProaudioSetupWindow(application=self)
+        win.quit.connect(lambda *_: self.quit())
         win.present()
 
     def on_about_action(self, *args):
