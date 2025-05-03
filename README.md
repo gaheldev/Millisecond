@@ -5,10 +5,11 @@
 Use [gnome-builder](https://flathub.org/apps/org.gnome.Builder)
 
 - [x] Need access to system to perform checks (see [sandbox permissions](https://docs.flatpak.org/en/latest/sandbox-permissions.html))
+- [ ] Fix filesystem check in flatpak
 - [ ] Fix /proc access?
 
 ```bash
-# add flathup
+# add flathub
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 # may have to manually install sdk 48 if not working from builder
 flatpak install org.gnome.Sdk/x86_64/48
@@ -67,7 +68,7 @@ dh_make --createorig -p proaudio-setup_0.1.0
 - [x] only close button
 - [x] autofix
 
-- [ ] Handle case where kernel configuration is not found
+- [x] Handle case where kernel configuration is not found
 
 ### rtfix
 - [ ] autofix

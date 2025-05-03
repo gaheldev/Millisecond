@@ -22,6 +22,7 @@ from gi.repository import Adw, Gtk, GObject
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
 from .rtfix import SwappinessDialog
+from .utils import is_flatpak
 
 @Gtk.Template(resource_path='/io/github/gaheldev/ProAudioSetup/window.ui')
 class ProaudioSetupWindow(Adw.ApplicationWindow):
@@ -139,9 +140,11 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
         self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.swap_diagnostic_row)
 
-        self.filesystems_diagnostic_row = DiagnosticRow(self, self.rtcqs, "filesystems", "#filesystems")
-        self.filesystems_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.io_group.add(self.filesystems_diagnostic_row)
+        # FIXME: filesystem analysis from flatpak build yields weird results
+        if not is_flatpak():
+            self.filesystems_diagnostic_row = DiagnosticRow(self, self.rtcqs, "filesystems", "#filesystems")
+            self.filesystems_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.io_group.add(self.filesystems_diagnostic_row)
 
         self.irqs_diagnostic_row = DiagnosticRow(self, self.rtcqs, "irqs")
         self.irqs_diagnostic_row.updated.connect(self._on_diagnostic_updated)
