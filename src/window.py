@@ -59,6 +59,15 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
             self.root_banner.connect("button-clicked", lambda *_: self.quit.emit())
             self.main_box.append(self.root_banner)
 
+        # banner warning if kernel configuration couldn't be found
+        self.kernel_config_found = self.rtcqs.status["kernel_config"]
+        if not self.kernel_config_found:
+            self.kernel_banner = Adw.Banner()
+            self.kernel_banner.set_title("Could not find kernel configuration.\n Important configuration tips cannot be displayed.")
+            self.kernel_banner.set_revealed(True)
+            self.kernel_banner.add_css_class("error")
+            self.main_box.append(self.kernel_banner)
+
         self.preferences_page = Adw.PreferencesPage()
 
         # Explanations and disclaimers
@@ -104,25 +113,22 @@ class ProaudioSetupWindow(Adw.ApplicationWindow):
         self.kernel_group = Adw.PreferencesGroup()
         self.kernel_group.set_title("Kernel")
 
-        self.kernel_diagnostic_row = DiagnosticRow(self, self.rtcqs, "kernel_config")
-        self.kernel_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.kernel_group.add(self.kernel_diagnostic_row)
+        if self.kernel_config_found:
+            self.timers_diagnostic_row = DiagnosticRow(self, self.rtcqs, "high_res_timers", "#installing_a_real-time_kernel")
+            self.timers_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.kernel_group.add(self.timers_diagnostic_row)
 
-        self.timers_diagnostic_row = DiagnosticRow(self, self.rtcqs, "high_res_timers", "#installing_a_real-time_kernel")
-        self.timers_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.kernel_group.add(self.timers_diagnostic_row)
+            self.tickless_diagnostic_row = DiagnosticRow(self, self.rtcqs, "tickless", "#installing_a_real-time_kernel")
+            self.tickless_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.kernel_group.add(self.tickless_diagnostic_row)
 
-        self.tickless_diagnostic_row = DiagnosticRow(self, self.rtcqs, "tickless", "#installing_a_real-time_kernel")
-        self.tickless_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.kernel_group.add(self.tickless_diagnostic_row)
+            self.preempt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "preempt_rt", "#do_i_really_need_a_real-time_kernel")
+            self.preempt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.kernel_group.add(self.preempt_diagnostic_row)
 
-        self.preempt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "preempt_rt", "#do_i_really_need_a_real-time_kernel")
-        self.preempt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.kernel_group.add(self.preempt_diagnostic_row)
-
-        self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations", "#disabling_spectre_and_meltdown_mitigations")
-        self.mitigations_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.kernel_group.add(self.mitigations_diagnostic_row)
+            self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations", "#disabling_spectre_and_meltdown_mitigations")
+            self.mitigations_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.kernel_group.add(self.mitigations_diagnostic_row)
 
         # I/O diagnostics
 
