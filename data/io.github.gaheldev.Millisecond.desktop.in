@@ -5,6 +5,6 @@ Icon=io.github.gaheldev.Millisecond
 Terminal=false
 Type=Application
 Categories=Utility;
-Keywords=GTK;
+Keywords=Realtime; RT; Audio; Music; Config; Diagnostic;
 StartupNotify=true
 DBusActivatable=true

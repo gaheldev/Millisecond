@@ -36,7 +36,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/gael/code/audio/system-stuff"
+                    "url" : "https://github.com/gaheldev/Millisecond"
                 }
             ],
             "config-opts" : [
