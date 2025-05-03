@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/io.github.gaheldev.ProAudioSetup.desktop.in
-data/io.github.gaheldev.ProAudioSetup.metainfo.xml.in
-data/io.github.gaheldev.ProAudioSetup.gschema.xml
+data/io.github.gaheldev.Millisecond.desktop.in
+data/io.github.gaheldev.Millisecond.metainfo.xml.in
+data/io.github.gaheldev.Millisecond.gschema.xml
 src/main.py
 src/window.py
 src/window.ui

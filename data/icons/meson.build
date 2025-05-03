@@ -1,4 +1,4 @@
-application_id = 'io.github.gaheldev.ProAudioSetup'
+application_id = 'io.github.gaheldev.Millisecond'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

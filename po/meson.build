@@ -1,1 +1,1 @@
-i18n.gettext('proaudio-setup', preset: 'glib')
+i18n.gettext('millisecond', preset: 'glib')

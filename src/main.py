@@ -24,14 +24,14 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, Adw
-from .window import ProaudioSetupWindow
+from .window import MillisecondWindow
 
 
-class ProaudioSetupApplication(Adw.Application):
+class MillisecondApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
-        super().__init__(application_id='io.github.gaheldev.ProAudioSetup',
+        super().__init__(application_id='io.github.gaheldev.Millisecond',
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
@@ -46,14 +46,14 @@ class ProaudioSetupApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = ProaudioSetupWindow(application=self)
+            win = MillisecondWindow(application=self)
         win.quit.connect(lambda *_: self.quit())
         win.present()
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
-        about = Adw.AboutDialog(application_name='proaudio-setup',
-                                application_icon='io.github.gaheldev.ProAudioSetup',
+        about = Adw.AboutDialog(application_name='Millisecond',
+                                application_icon='io.github.gaheldev.Millisecond',
                                 developer_name='Gahel',
                                 version='0.1.0',
                                 developers=['Jeremy Jongepier', 'Gahel'],
@@ -83,5 +83,5 @@ class ProaudioSetupApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
-    app = ProaudioSetupApplication()
+    app = MillisecondApplication()
     return app.run(sys.argv)

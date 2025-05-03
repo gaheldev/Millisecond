@@ -1,4 +1,4 @@
-# proaudio-setup
+# Millisecond
 
 ## Flatpak
 
@@ -29,7 +29,7 @@ prodaudio-setup
 ```
 sudo apt-get install debhelper dh-make
 meson compile -C build
-dh_make --createorig -p proaudio-setup_0.1.0
+dh_make --createorig -p millisecond_0.1.0
 ```
 
 ## TODO

@@ -2,8 +2,8 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="ProaudioSetupWindow" parent="AdwApplicationWindow">
-    <property name="title" translatable="yes">Proaudio-setup</property>
+  <template class="MillisecondWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Millisecond</property>
     <property name="default-width">800</property>
     <property name="default-height">600</property>
     <property name="content">
@@ -38,7 +38,7 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Proaudio-setup</attribute>
+        <attribute name="label" translatable="yes">_About Millisecond</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>

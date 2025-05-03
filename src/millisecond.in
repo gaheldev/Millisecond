@@ -1,6 +1,6 @@
 #!@PYTHON@
 
-# proaudio-setup.in
+# millisecond.in
 #
 # Copyright 2025 Gahel
 #
@@ -31,16 +31,16 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-locale.bindtextdomain('proaudio-setup', localedir)
-locale.textdomain('proaudio-setup')
-gettext.install('proaudio-setup', localedir)
+locale.bindtextdomain('millisecond', localedir)
+locale.textdomain('millisecond')
+gettext.install('millisecond', localedir)
 
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'proaudio-setup.gresource'))
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'millisecond.gresource'))
     resource._register()
 
-    from proaudio_setup import main
+    from millisecond import main
     sys.exit(main.main(VERSION))

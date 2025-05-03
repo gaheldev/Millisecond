@@ -1,9 +1,9 @@
 {
-    "id" : "io.github.gaheldev.ProAudioSetup",
+    "id" : "io.github.gaheldev.Millisecond",
     "runtime" : "org.gnome.Sdk",
     "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
-    "command" : "proaudio-setup",
+    "command" : "millisecond",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -30,7 +30,7 @@
     ],
     "modules" : [
         {
-            "name" : "proaudio-setup",
+            "name" : "millisecond",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [

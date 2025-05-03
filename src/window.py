@@ -24,9 +24,9 @@ from .diagnostic import DiagnosticRow
 from .rtfix import SwappinessDialog
 from .utils import is_flatpak
 
-@Gtk.Template(resource_path='/io/github/gaheldev/ProAudioSetup/window.ui')
-class ProaudioSetupWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'ProaudioSetupWindow'
+@Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
+class MillisecondWindow(Adw.ApplicationWindow):
+    __gtype_name__ = 'MillisecondWindow'
 
     quit = GObject.Signal("quit")
 

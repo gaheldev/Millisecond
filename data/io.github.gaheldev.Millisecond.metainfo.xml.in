@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.gaheldev.ProAudioSetup</id>
+  <id>io.github.gaheldev.Millisecond</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
 
-  <name>Proaudio-setup</name>
-  <summary>Keep the summary shorter, between 10 and 35 characters</summary>
+  <name>Millisecond</name>
+  <summary>Optimize your system for low latency audio</summary>
   <description>
     <p>No description</p>
   </description>
 
   <developer id="tld.vendor">
-    <name>Developer name</name>
+    <name>Gahel</name>
   </developer>
 
   <!-- Requered: Should be a link to the upstream homepage for the component -->
@@ -33,10 +33,10 @@
   <!--URLs of this type should point to a webpage showing information on how to contribute to the described software project -->
   <url type="contribute">https://example.org/contribute</url>
 
-  <translation type="gettext">proaudio-setup</translation>
+  <translation type="gettext">millisecond</translation>
   <!-- All graphical applications having a desktop file must have this tag in the MetaInfo.
      If this is present, appstreamcli compose will pull icons, keywords and categories from the desktop file. -->
-  <launchable type="desktop-id">io.github.gaheldev.ProAudioSetup.desktop</launchable>
+  <launchable type="desktop-id">io.github.gaheldev.Millisecond.desktop</launchable>
   <!-- Use the OARS website (https://hughsie.github.io/oars/generate.html) to generate these and make sure to use oars-1.1 -->
   <content_rating type="oars-1.1" />
 

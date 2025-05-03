@@ -1,9 +1,9 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
-moduledir = pkgdatadir / 'proaudio_setup'
+moduledir = pkgdatadir / 'millisecond'
 gnome = import('gnome')
 
-gnome.compile_resources('proaudio-setup',
-  'proaudio-setup.gresource.xml',
+gnome.compile_resources('millisecond',
+  'millisecond.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
@@ -18,15 +18,15 @@ conf.set('localedir', get_option('prefix') / get_option('localedir'))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'proaudio-setup.in',
-  output: 'proaudio-setup',
+  input: 'millisecond.in',
+  output: 'millisecond',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir'),
   install_mode: 'r-xr-xr-x'
 )
 
-proaudio_setup_sources = [
+millisecond_sources = [
   '__init__.py',
   'main.py',
   'window.py',
@@ -36,4 +36,4 @@ proaudio_setup_sources = [
   'utils.py',
 ]
 
-install_data(proaudio_setup_sources, install_dir: moduledir)
+install_data(millisecond_sources, install_dir: moduledir)
