@@ -56,8 +56,8 @@ class MillisecondApplication(Adw.Application):
                                 application_icon='io.github.gaheldev.Millisecond',
                                 developer_name='Gahel',
                                 version='0.1.0',
-                                developers=['Jeremy Jongepier', 'Gahel'],
-                                copyright='© 2021 Jeremy Jongepier\n© 2025 Gahel')
+                                developers=['Gahel'],
+                                copyright='© 2025 Gahel')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_('translator-credits'))
         about.present(self.props.active_window)
