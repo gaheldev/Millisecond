@@ -72,6 +72,7 @@ dh_make --createorig -p millisecond_0.1.0
     - [ ] audio group
     - [ ] preempt=full
     - [x] swappiness `sysctl -p` to update
+        - [ ] new ubuntu distributions (and others?) do not use /etc/sysctl.conf anymore: see [ubuntu discusion](https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/2084376)
 - [ ] tests
     - [ ] swappiness
 

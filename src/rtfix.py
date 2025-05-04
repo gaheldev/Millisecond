@@ -28,6 +28,7 @@ from .utils import is_flatpak
 
 class Swappiness:
     def __init__(self) -> None:
+        # FIXME: doesn't exist or not read on startup in some systems
         self.conf_path = "/etc/sysctl.conf"
         self.proc_path = "/proc/sys/vm/swappiness"
         self.tmp_file = "/tmp/sysctl.conf"
