@@ -50,6 +50,7 @@ dpkg-buildpackage -rfakeroot -us -uc
     - [ ] in README + current version
     - [x] in app
 
+- [ ] use homemade dimmed for older gnome versions
 - [x] refresh diagnostic on fix
 - [x] refresh all button
 - [x] refresh diagnostics on refresh all
