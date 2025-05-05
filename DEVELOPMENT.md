@@ -18,15 +18,17 @@ flatpak install org.gnome.Sdk/x86_64/48
 meson setup build/
 meson compile -C build/
 meson install -C build/
-prodaudio-setup
+millisecond
 ```
 
 ### Deb (wip)
 
 ```
-sudo apt-get install debhelper dh-make
+sudo apt-get install debhelper build-essential dh-make dh-python
 meson compile -C build
-dh_make --createorig -p millisecond_0.1.0
+dh_make --createorig -s -p millisecond_0.1.0
+dh_auto_configure --buildsystem=meson
+dpkg-buildpackage -rfakeroot -us -uc
 ```
 
 ## TODO
