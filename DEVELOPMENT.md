@@ -14,52 +14,49 @@ flatpak install org.gnome.Sdk/x86_64/48
 
 TODO: build from CLI
 
-### Direct compilation/installation
+### Direct installation
 
-```
-meson setup build/
-meson compile -C build/
+```bash
+meson setup build/ # required the first time
 meson install -C build/
+```
+
+You can now run millisecond from your app launcher or from the terminal using:
+```bash
 millisecond
 ```
 
 ### Deb
 
-Install [docker](https://docs.docker.com/engine/install/) for testing.
-
 #### First initialization
+Install [docker](https://docs.docker.com/engine/install/) for testing and the following dependencies:
 
-- [ ] git submodule
-```
+```bash
 sudo apt-get install debhelper build-essential dh-make dh-python
 meson setup build/
-meson compile -C build
-dh_make --createorig -s -p millisecond_0.1.0
-dh_auto_configure --buildsystem=meson
+make deb
 ```
-
-Change debian/rules so that it uses:
-```
-dh $@ --with python3 --buildsystem=meson
-```
-
-Complete the debian/control file with required info and dependencies then build the deb
-```
-dpkg-buildpackage -rfakeroot -us -uc
-```
-
-Package should be created at project's root dir.
 
 #### updates
 
+If necessary, complete the debian/control file with required info and dependencies then build the deb again.
+
+```bash
+make deb
+```
+
 #### test
 
+```bash
+make test-deb
+```
 
 ## TODO
 ### GUI
 - [ ] contact rtcqs author
 
 - [x] pick license (GPL by default, rtcqs is MIT)
+- [ ] specify license in deb
 - [ ] pick flatpak url
 - [ ] fill metainfo in data/
 - [ ] name
