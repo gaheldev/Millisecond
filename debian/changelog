@@ -1,0 +1,5 @@
+millisecond (0.1.0-1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Gahel <music@gahel.fr>  Tue, 13 May 2025 18:57:02 +0200

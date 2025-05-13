@@ -1,0 +1,37 @@
+Source: millisecond
+Section: utils
+Priority: optional
+Maintainer: Gahel <music@gahel.fr>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-python,
+ python3-all,
+ meson (>= 0.50),
+ ninja-build,
+ libgtk-4-dev,
+ libadwaita-1-dev (>= 1.5),
+ python3-gi,
+ gir1.2-gtk-4.0,
+ gir1.2-adw-1,
+ adwaita-icon-theme
+Standards-Version: 4.7.0
+Homepage: https://github.com/gaheldev/Millisecond.git
+Vcs-Browser: https://github.com/gaheldev/Millisecond
+Vcs-Git: https://github.com/gaheldev/Millisecond.git
+
+Package: millisecond
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ gir1.2-gtk-4.0,
+ python3-gi,
+ gir1.2-gtk-4.0,
+ gir1.2-adw-1 (>= 1.5),
+ gir1.2-pango-1.0,
+ gir1.2-gdkpixbuf-2.0,
+ adwaita-icon-theme
+Description: Optimize your system for low latency audio
+ Runs checks on the system and provides documentation and fixes to
+ improve low latency performance for audio production.

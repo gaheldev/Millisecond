@@ -12,6 +12,8 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 flatpak install org.gnome.Sdk/x86_64/48
 ```
 
+TODO: build from CLI
+
 ### Direct compilation/installation
 
 ```
@@ -21,15 +23,37 @@ meson install -C build/
 millisecond
 ```
 
-### Deb (wip)
+### Deb
 
+Install [docker](https://docs.docker.com/engine/install/) for testing.
+
+#### First initialization
+
+- [ ] git submodule
 ```
 sudo apt-get install debhelper build-essential dh-make dh-python
+meson setup build/
 meson compile -C build
 dh_make --createorig -s -p millisecond_0.1.0
 dh_auto_configure --buildsystem=meson
+```
+
+Change debian/rules so that it uses:
+```
+dh $@ --with python3 --buildsystem=meson
+```
+
+Complete the debian/control file with required info and dependencies then build the deb
+```
 dpkg-buildpackage -rfakeroot -us -uc
 ```
+
+Package should be created at project's root dir.
+
+#### updates
+
+#### test
+
 
 ## TODO
 ### GUI
