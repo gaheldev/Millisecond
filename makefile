@@ -1,4 +1,4 @@
-.PHONY: install run uninstall deb compile
+.PHONY: install run uninstall deb compile test-deb
 
 all: install run
 
@@ -24,9 +24,12 @@ deb: compile
 	# potentially need to reconfigure
 	dh_make --createorig -s -p millisecond_0.1.0 || echo "continue anyway"
 	dh_auto_configure --buildsystem=meson
-	# # actually build
+	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
-
+	# move deb files from parent directory to build-aux/deb/
 	mkdir -p build-aux/deb/
 	# xargs magic to move deb files (makefile doesn't get bash regex)
 	ls ../ | grep millisecond_0.1.0 | xargs -I % mv ../% build-aux/deb/
+
+test-deb:
+	cd test/deb/ && ./test-all-distros

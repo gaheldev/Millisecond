@@ -1,0 +1,14 @@
+#!/bin/bash
+# Usage: ./build [distro]
+
+set -e
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: $0 distro"
+	exit 1
+fi
+
+distro=$1
+name=${distro}-millisecond
+
+docker build --build-arg distro="$distro" --no-cache --network=host -t "${name}" .

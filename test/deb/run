@@ -1,0 +1,35 @@
+#!/bin/bash
+# Usage: ./test-deb-wayland.sh package.deb image-millisecond
+
+set -e
+
+if [ "$#" -ne 2 ] && [ ! -f "$1" ]; then
+    echo "Usage: $0 package.deb image-millisecond"
+    exit 1
+fi
+
+DEB_PACKAGE=$(realpath "$1")
+IMAGE=$2
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+# Create a directory to store the .deb package
+mkdir -p "$SCRIPT_DIR/test-pkg"
+cp "$DEB_PACKAGE" "$SCRIPT_DIR/test-pkg/"
+
+docker run -u 0 --rm \
+	-v "$SCRIPT_DIR/test-pkg:/tmp/package" \
+	-e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+	-v /run/user/$UID/wayland-0:/run/user/$UID/wayland-0 \
+	-v $XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR \
+	-e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
+	-e DISPLAY=$DISPLAY \
+	--net=host \
+	--ipc=host \
+	--device /dev/dri \
+	--security-opt seccomp=unconfined \
+	--env QT_QPA_PLATFORM=wayland \
+	$IMAGE
+
+# Clean up
+rm -rf "$SCRIPT_DIR/test-pkg"
+echo "Test completed."

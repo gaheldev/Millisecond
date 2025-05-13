@@ -1,0 +1,13 @@
+#!/bin/bash
+
+deb="../../build-aux/deb/millisecond_0.1.0-1_amd64.deb"
+
+distributions=(
+	"ubuntu:24.04"
+	"debian:sid"
+)
+
+for distro in "${distributions[@]}"; do
+	./build "$distro"
+	./run $deb ${distro}-millisecond
+done
