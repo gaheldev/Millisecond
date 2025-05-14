@@ -4,7 +4,7 @@ d0ccf3c8228ad35b5059fb9b554346e7  usr/share/applications/io.github.gaheldev.Mill
 cea0ee22346b995ecf005c4fc9639785  usr/share/doc-base/millisecond.millisecond
 e7f35f872f9965e85ee2291f5d66e82c  usr/share/doc/millisecond/README.Debian
 6954c81034436b2a1f4687a832ec8fc7  usr/share/doc/millisecond/changelog.Debian.gz
-cf91fa6dd5aa1f4ae47b6cfb5fdcac30  usr/share/doc/millisecond/copyright
+dad086a8ac7d584ca31de34d09de3993  usr/share/doc/millisecond/copyright
 f073331434a7378c8207dee52d21b0fb  usr/share/glib-2.0/schemas/io.github.gaheldev.Millisecond.gschema.xml
 a30acd7126f4027fd075430762e16807  usr/share/icons/hicolor/scalable/apps/io.github.gaheldev.Millisecond.svg
 4bef718a161052724388b87586151ef1  usr/share/icons/hicolor/symbolic/apps/io.github.gaheldev.Millisecond-symbolic.svg

@@ -16,7 +16,7 @@ Build-Depends:
  gir1.2-adw-1,
  adwaita-icon-theme
 Standards-Version: 4.7.0
-Homepage: https://github.com/gaheldev/Millisecond.git
+Homepage: https://github.com/gaheldev/Millisecond
 Vcs-Browser: https://github.com/gaheldev/Millisecond
 Vcs-Git: https://github.com/gaheldev/Millisecond.git
 
