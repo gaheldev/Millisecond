@@ -12,7 +12,7 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 flatpak install org.gnome.Sdk/x86_64/48
 ```
 
-TODO: build from CLI
+<!-- TODO: build from CLI -->
 
 ### Direct installation
 
@@ -55,11 +55,8 @@ make test-deb
 ### GUI
 - [ ] contact rtcqs author
 
-- [x] pick license (GPL by default, rtcqs is MIT)
-- [ ] specify license in deb
 - [ ] pick flatpak url
 - [ ] fill metainfo in data/
-- [ ] name
 - [ ] icons
 - [ ] make flatpak distributable
     - [x] set up basic export
@@ -76,7 +73,6 @@ make test-deb
 - [x] refresh all button
 - [x] refresh diagnostics on refresh all
 - [ ] In-app explanations
-- [ ] link to full doc
 - [x] expanding row with:
     - [x] check emoji
     - [x] Title from rtcqs
