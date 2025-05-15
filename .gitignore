@@ -1,3 +1,11 @@
 build/
 build-aux/
 *__pycache__/
+
+debian/millisecond/
+debian/.debhelper/
+debian/files
+
+NEW_VERSION
+
+test/deb/test-pkg/

@@ -1,6 +1,11 @@
 #!/bin/bash
 
-deb="../../build-aux/deb/millisecond_0.1.0-1_amd64.deb"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 test-all-distros path/to/deb"
+    exit 1
+fi
+
+deb=$1
 
 distributions=(
 	"ubuntu:24.04"

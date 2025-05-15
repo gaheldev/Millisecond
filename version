@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -f NEW_VERSION ]; then
+	cat NEW_VERSION
+else
+	# assumes version tags of form vx.x.x
+	version=`git describe --tags`
+
+	# remove "v" from the version
+	echo ${version:1}
+fi
+

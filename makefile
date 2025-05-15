@@ -1,12 +1,16 @@
-.PHONY: install run uninstall deb compile test-deb
+.PHONY: install run uninstall setup-deb deb compile test-deb release
+
 
 all: install run
+
 
 run: 
 	millisecond
 
+
 install:
 	meson install -C build
+
 
 uninstall:
 	sudo rm /usr/local/share/metainfo/io.github.gaheldev.Millisecond.metainfo.xml
@@ -16,20 +20,44 @@ uninstall:
 	sudo rm /usr/local/share/dbus-1/services/io.github.gaheldev.Millisecond.service
 	sudo rm /usr/local/bin/millisecond
 
+
 compile:
 	meson compile -C build
 
-# TODO: handle version number
-deb: compile
+
+VERSION := $(shell ./version)
+
+
+release: 
+	@echo "current version is: $(VERSION)"
+	@read -p "new version: " new_version; \
+		echo $$new_version > NEW_VERSION
+	@make setup-deb
+	@echo ====================================
+	@git status
+	@echo ====================================
+	@git add -p
+	@git commit -m "Bump version to $$(cat NEW_VERSION)"
+	@git tag v$$(cat NEW_VERSION)
+	@rm NEW_VERSION
+
+
+setup-deb: compile
 	# potentially need to reconfigure
-	dh_make --createorig -s -p millisecond_0.1.0 || echo "continue anyway"
+	dh_make --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
 	dh_auto_configure --buildsystem=meson
+	dch -b --newversion "$(VERSION)-1" "Automated release of $(VERSION)"
+	nvim debian/changelog
+
+
+deb: setup-deb
 	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
 	# move deb files from parent directory to build-aux/deb/
-	mkdir -p build-aux/deb/
+	mkdir -p build-aux/deb/$(VERSION)/
 	# xargs magic to move deb files (makefile doesn't get bash regex)
-	ls ../ | grep millisecond_0.1.0 | xargs -I % mv ../% build-aux/deb/
+	ls ../ | grep millisecond_$(VERSION) | xargs -I % mv ../% build-aux/deb/$(VERSION)/
+
 
 test-deb:
-	cd test/deb/ && ./test-all-distros
+	cd test/deb/ && ./test-all-distros ../../build-aux/deb/$(VERSION)/millisecond_$(VERSION)-1_amd64.deb
