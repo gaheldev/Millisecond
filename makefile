@@ -1,4 +1,4 @@
-.PHONY: install run uninstall setup-deb deb compile test-deb release
+.PHONY: install run uninstall setup-deb deb rebuild-deb compile test-deb release
 
 
 all: install run
@@ -51,6 +51,17 @@ setup-deb: compile
 
 
 deb: setup-deb
+	# actually build
+	dpkg-buildpackage -rfakeroot -us -uc
+	# move deb files from parent directory to build-aux/deb/
+	mkdir -p build-aux/deb/$(VERSION)/
+	# xargs magic to move deb files (makefile doesn't get bash regex)
+	ls ../ | grep millisecond_$(VERSION) | xargs -I % mv ../% build-aux/deb/$(VERSION)/
+
+
+rebuild-deb:
+	dh_make -y --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
+	dh_auto_configure --buildsystem=meson
 	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
 	# move deb files from parent directory to build-aux/deb/
