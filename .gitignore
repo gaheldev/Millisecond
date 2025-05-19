@@ -9,3 +9,5 @@ debian/files
 NEW_VERSION
 
 test/deb/test-pkg/
+
+.flatpak-builder/

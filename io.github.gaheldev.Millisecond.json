@@ -35,8 +35,8 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "https://github.com/gaheldev/Millisecond"
+                    "type" : "dir",
+                    "path" : "."
                 }
             ],
             "config-opts" : [

@@ -3,7 +3,9 @@
 ## Build
 ### Flatpak
 
-Use [gnome-builder](https://flathub.org/apps/org.gnome.Builder)
+#### Using Gnome-Builder
+
+Install [gnome-builder](https://flathub.org/apps/org.gnome.Builder)
 
 ```bash
 # add flathub
@@ -12,7 +14,19 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 flatpak install org.gnome.Sdk/x86_64/48
 ```
 
-<!-- TODO: build from CLI -->
+#### From CLI
+```bash
+sudo apt install flatpak flatpak-builder
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install org.gnome.Sdk/x86_64/48
+make flatpak
+```
+
+Install and run the built flatpak
+```bash
+flatpak install build-aux/flatpak/release/<version>/Millisecond.flatpak
+flatpak run io.github.gaheldev.Millisecond
+```
 
 ### Direct installation
 
