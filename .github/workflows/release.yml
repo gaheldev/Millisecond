@@ -22,21 +22,20 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo apt update
-        sudo apt install -y \
-          dh-python \ 
-          python3-all \ 
-          meson \ 
-          ninja-build \ 
-          libgtk-4-dev \ 
-          libadwaita-1-dev \ 
-          python3-gi \ 
-          gir1.2-gtk-4.0 \ 
-          gir1.2-adw-1 \ 
-          adwaita-icon-theme \
-          meson ninja-build \
-          build-essential \
-          flatpak flatpak-builder \
-          devscripts debhelper
+        sudo apt install dh-python
+        sudo apt install python3-all
+        sudo apt install meson 
+        sudo apt install ninja-build
+        sudo apt install libgtk-4-dev
+        sudo apt install libadwaita-1-dev
+        sudo apt install python3-gi
+        sudo apt install gir1.2-gtk-4.0 
+        sudo apt install gir1.2-adw-1
+        sudo apt install adwaita-icon-theme
+        sudo apt install meson ninja-build
+        sudo apt install build-essential
+        sudo apt install flatpak flatpak-builder
+        sudo apt install devscripts debhelper
 
     - name: Configure project with Meson
       run: meson setup build
