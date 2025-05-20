@@ -43,7 +43,7 @@ jobs:
     - name: Install Flatpak dependencies
       run: |
         flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        flatpak install --user org.gnome.Sdk/x86_64/48
+        flatpak install -y --user org.gnome.Sdk/x86_64/48
 
     - name: Build the project
       run: meson compile -C build
