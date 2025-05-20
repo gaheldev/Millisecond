@@ -2,9 +2,17 @@ build/
 build-aux/
 *__pycache__/
 
-debian/millisecond/
-debian/.debhelper/
+# Debian packaging artifacts
+*.deb
+*.build
+*.buildinfo
+*.changes
+*.dsc
 debian/files
+debian/tmp
+debian/*.substvars
+debian/*.debhelper.log
+debian/*/
 
 NEW_VERSION
 

@@ -49,7 +49,7 @@ jobs:
       run: meson compile -C build
 
     - name: Build .deb package
-      run: make rebuild-deb
+      run: make deb
 
     - name: Build Flatpak package
       run: make flatpak

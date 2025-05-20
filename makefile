@@ -1,4 +1,4 @@
-.PHONY: install run uninstall setup-deb deb rebuild-deb compile test-deb release
+.PHONY: install run uninstall setup-deb deb bump-deb compile test-deb release
 
 
 all: install run
@@ -32,7 +32,7 @@ release:
 	@echo "current version is: $(VERSION)"
 	@read -p "new version: " new_version; \
 		echo $$new_version > NEW_VERSION
-	@make setup-deb
+	@make bump-deb
 	@echo ====================================
 	@git status
 	@echo ====================================
@@ -46,11 +46,13 @@ setup-deb: compile
 	# potentially need to reconfigure
 	dh_make -y --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
 	dh_auto_configure --buildsystem=meson
-	dch -b --newversion "$(VERSION)-1" "Automated release of $(VERSION)"
+	dch -b --newversion "$(VERSION)" "Automated release of $(VERSION)"
 	nvim debian/changelog
 
 
-deb: setup-deb
+bump-deb:
+	dch -b --newversion "$(VERSION)" "Automated release of $(VERSION)"
+	nvim debian/changelog
 	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
 	# move deb files from parent directory to build-aux/deb/
@@ -58,10 +60,7 @@ deb: setup-deb
 	# xargs magic to move deb files (makefile doesn't get bash regex)
 	ls ../ | grep millisecond_$(VERSION) | xargs -I % mv ../% build-aux/deb/$(VERSION)/
 
-
-rebuild-deb:
-	dh_make -y --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
-	dh_auto_configure --buildsystem=meson
+deb:
 	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
 	# move deb files from parent directory to build-aux/deb/
@@ -71,7 +70,7 @@ rebuild-deb:
 
 
 test-deb:
-	cd test/deb/ && ./test-all-distros ../../build-aux/deb/$(VERSION)/millisecond_$(VERSION)-1_amd64.deb
+	cd test/deb/ && ./test-all-distros ../../build-aux/deb/$(VERSION)/millisecond_$(VERSION)_amd64.deb
 
 
 flatpak:
@@ -80,3 +79,4 @@ flatpak:
 	mkdir -p build-aux/flatpak/tmp-repo
 	flatpak-builder --repo=build-aux/flatpak/tmp-repo --force-clean --install-deps-from=flathub build-aux/flatpak/build/$(VERSION) io.github.gaheldev.Millisecond.json
 	flatpak build-bundle build-aux/flatpak/tmp-repo build-aux/flatpak/release/$(VERSION)/Millisecond.flatpak io.github.gaheldev.Millisecond --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
+	rm -r .flatpak-builder
