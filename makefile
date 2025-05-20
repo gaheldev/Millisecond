@@ -77,6 +77,6 @@ flatpak:
 	mkdir -p build-aux/flatpak/build/$(VERSION)
 	mkdir -p build-aux/flatpak/release/$(VERSION)
 	mkdir -p build-aux/flatpak/tmp-repo
-	flatpak-builder --repo=build-aux/flatpak/tmp-repo --force-clean --install-deps-from=flathub build-aux/flatpak/build/$(VERSION) io.github.gaheldev.Millisecond.json
+	flatpak-builder --user --repo=build-aux/flatpak/tmp-repo --force-clean --install-deps-from=flathub build-aux/flatpak/build/$(VERSION) io.github.gaheldev.Millisecond.json
 	flatpak build-bundle build-aux/flatpak/tmp-repo build-aux/flatpak/release/$(VERSION)/Millisecond.flatpak io.github.gaheldev.Millisecond --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
 	rm -r .flatpak-builder
