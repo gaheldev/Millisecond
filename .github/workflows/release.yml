@@ -1,0 +1,94 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install build dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          dh-python \ 
+          python3-all \ 
+          meson \ 
+          ninja-build \ 
+          libgtk-4-dev \ 
+          libadwaita-1-dev \ 
+          python3-gi \ 
+          gir1.2-gtk-4.0 \ 
+          gir1.2-adw-1 \ 
+          adwaita-icon-theme \
+          meson ninja-build \
+          build-essential \
+          flatpak flatpak-builder \
+          devscripts debhelper
+
+    - name: Configure project with Meson
+      run: meson setup build
+
+    - name: Install Flatpak dependencies
+      run:
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        flatpak install org.gnome.Sdk/x86_64/48
+
+    - name: Build the project
+      run: meson compile -C build
+
+    - name: Build .deb package
+      run: make rebuild-deb
+
+    - name: Build Flatpak package
+      run: make flatpak
+
+    - name: Archive build artifacts
+      run: |
+        mkdir artifacts
+        cp build-aux/deb/*/*.deb artifacts/millisecond.deb
+        cp build-aux/flatpak/release/*/Millisecond.flatpak artifacts/
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+
+    - name: Upload .deb to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts/millisecond.deb
+        asset_name: millisecond_${{ github.ref_name }}.deb
+        asset_content_type: application/vnd.debian.binary-package
+
+    - name: Upload Flatpak to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts/Millisecond.flatpak
+        asset_name: Millisecond_${{ github.ref_name }}.flatpak
+        asset_content_type: application/octet-stream
+
