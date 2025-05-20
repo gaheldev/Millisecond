@@ -41,7 +41,7 @@ jobs:
       run: meson setup build
 
     - name: Install Flatpak dependencies
-      run:
+      run: |
         flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
         flatpak install org.gnome.Sdk/x86_64/48
 
