@@ -35,7 +35,7 @@ jobs:
         sudo apt install meson ninja-build
         sudo apt install build-essential
         sudo apt install flatpak flatpak-builder
-        sudo apt install devscripts debhelper
+        sudo apt install devscripts debhelper dh-make
 
     - name: Configure project with Meson
       run: meson setup build
