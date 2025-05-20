@@ -73,6 +73,7 @@ make test-deb
 - [ ] fill metainfo in data/
 - [ ] icons
 - [ ] make flatpak distributable
+    - [ ] bump flatpak version and changelog
     - [x] set up basic export
     - [x] properly require runner / system dependencies
     - [ ] setup for flathub
