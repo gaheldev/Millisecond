@@ -44,7 +44,7 @@ release:
 
 setup-deb: compile
 	# potentially need to reconfigure
-	dh_make --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
+	dh_make -y --createorig -c gpl3 -s -p millisecond_$(VERSION) || echo "continue anyway"
 	dh_auto_configure --buildsystem=meson
 	dch -b --newversion "$(VERSION)-1" "Automated release of $(VERSION)"
 	nvim debian/changelog
