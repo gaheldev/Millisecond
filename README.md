@@ -51,5 +51,5 @@ meson install -C build/
 ```
 
 # 🧑‍🤝‍🧑 Contributions
-It would be lovely to get icon contributions that follow [flathub's standards](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app there.
+It would be lovely to get icon contributions that follow [gnome's standard](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app.
 
