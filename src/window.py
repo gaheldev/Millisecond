@@ -21,7 +21,7 @@ from gi.repository import Adw, Gtk, GObject
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
-from .rtfix import SwappinessDialog
+# from .rtfix import SwappinessDialog
 from .utils import is_flatpak
 
 @Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
@@ -146,7 +146,9 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.io_group = Adw.PreferencesGroup()
         self.io_group.set_title("I/O")
 
-        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf", SwappinessDialog())
+        # FIXME: make swappiness fix more reliable on recent ubuntu
+        # self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf", SwappinessDialog())
+        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf")
         self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.swap_diagnostic_row)
 
