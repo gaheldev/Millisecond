@@ -26,7 +26,7 @@ In future releases, I intend to allow running fixes from the app whenever possib
 # 🛠️ Installation
 
 ### From package releases
-Install the latest deb (Ubuntu >= 24.04) or flatpak [release](https://github.com/gaheldev/Millisecond/releases/latest). \
+Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04) or flatpak release. \
 If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
 
 >[!NOTE]
