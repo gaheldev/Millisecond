@@ -64,7 +64,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.kernel_config_found = self.rtcqs.status["kernel_config"]
         if not self.kernel_config_found:
             self.kernel_banner = Adw.Banner()
-            self.kernel_banner.set_title("Could not find kernel configuration.\n Important configuration tips cannot be displayed.")
+            self.kernel_banner.set_title("Could not find kernel configuration.\nImportant configuration tips cannot be displayed.")
             self.kernel_banner.set_revealed(True)
             self.kernel_banner.add_css_class("error")
             self.main_box.append(self.kernel_banner)
@@ -76,10 +76,11 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.explanations_group = Adw.PreferencesGroup()
 
         self.explanations = Gtk.Label()
-        text = 'Identify and fix possible bottlenecks that could have a negative impact on the performance of your system when working with Linux audio.'
+        text = 'Identify and possible bottlenecks for low latency audio.\nIf you struggle with performance try to implement some of the suggested fixes.'
         self.explanations.set_label(text)
         self.explanations.set_wrap(True)
         self.explanations.add_css_class("dimmed")
+        self.explanations.set_justify(Gtk.Justification.CENTER)
         self.explanations_group.add(self.explanations)
 
         self.linuxaudio_link = Gtk.LinkButton()
