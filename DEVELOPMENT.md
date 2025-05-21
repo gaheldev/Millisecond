@@ -1,6 +1,16 @@
 # Development
 
 ## Build
+
+Install all dev dependencies, for example on Ubuntu:
+```bash
+sudo apt install meson ninja-build build-essential
+sudo apt install python3-all
+sudo apt install libgtk-4-dev libadwaita-1-dev python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 adwaita-icon-theme
+sudo apt install devscripts debhelper dh-make dh-python
+sudo apt install flatpak flatpak-builder
+```
+
 ### Flatpak
 
 #### Using Gnome-Builder

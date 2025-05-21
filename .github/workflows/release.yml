@@ -27,7 +27,6 @@ jobs:
         sudo apt install gir1.2-gtk-4.0 
         sudo apt install gir1.2-adw-1
         sudo apt install adwaita-icon-theme
-        sudo apt install meson ninja-build
         sudo apt install build-essential
         sudo apt install flatpak flatpak-builder
         sudo apt install devscripts debhelper dh-make
