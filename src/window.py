@@ -76,7 +76,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.explanations_group = Adw.PreferencesGroup()
 
         self.explanations = Gtk.Label()
-        text = 'Identify and possible bottlenecks for low latency audio.\nIf you struggle with performance try to implement some of the suggested fixes.'
+        text = 'Identify possible bottlenecks for low latency audio.\nImplement some of the suggested fixes if you struggle with performance.'
         self.explanations.set_label(text)
         self.explanations.set_wrap(True)
         self.explanations.add_css_class("dimmed")
