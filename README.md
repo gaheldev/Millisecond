@@ -14,7 +14,8 @@ Optimize your system for low latency audio.
 </a>
 </div>
 
-![image](https://github.com/user-attachments/assets/bfb949b5-359f-417b-8720-2a0fd0f72f39)
+![image](https://github.com/user-attachments/assets/fa0408b3-013e-4aaf-a587-cfe90938f9bd)
+
 
 Millisecond is a gtk app based on [rctqs](https://codeberg.org/rtcqs/rtcqs). \
 It provides system diagnostics and offers tips to improve low latency performance for audio production, with links to detailed documentation from [linuxaudio wiki](https://wiki.linuxaudio.org/wiki/system_configuration).
