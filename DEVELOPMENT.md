@@ -80,6 +80,12 @@ make test-deb
 ### GUI
 - [ ] pick flatpak url
 - [ ] fill metainfo in data/
+    - [ ] screenshots
+    - [ ] version
+    - [ ] date
+    - [ ] description
+    - [ ] changes
+    - [ ] color scheme
 - [ ] icons
 - [ ] make flatpak distributable
     - [x] bump flatpak version and changelog

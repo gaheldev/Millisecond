@@ -63,8 +63,7 @@
       <description translate="no">
         <p>Release description</p>
         <ul>
-          <li>List of changes</li>
-          <li>List of changes</li>
+          <li>automatic release</li>
         </ul>
       </description>
     </release>
