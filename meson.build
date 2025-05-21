@@ -1,5 +1,5 @@
 project('millisecond',
-  version: run_command('sh', 'version').stdout().strip(),
+  version: run_command('bash', 'version').stdout().strip(),
   meson_version: '>= 1.0.0',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )

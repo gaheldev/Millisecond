@@ -30,12 +30,13 @@ from .window import MillisecondWindow
 class MillisecondApplication(Adw.Application):
     """The main application singleton class."""
 
-    def __init__(self):
+    def __init__(self, version='dev'):
         super().__init__(application_id='io.github.gaheldev.Millisecond',
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('refresh', self.on_refresh_action, ['<primary>r'])
+        self.version = version
         # TODO: connect refresh_button to refresh action
 
     def do_activate(self):
@@ -55,7 +56,7 @@ class MillisecondApplication(Adw.Application):
         about = Adw.AboutDialog(application_name='Millisecond',
                                 application_icon='io.github.gaheldev.Millisecond',
                                 developer_name='Gahel',
-                                version='0.1.0',
+                                version=self.version,
                                 developers=['Gahel', 'Jeremy Jongepier'],
                                 copyright='© 2025 Gahel')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
@@ -83,5 +84,5 @@ class MillisecondApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
-    app = MillisecondApplication()
+    app = MillisecondApplication(version)
     return app.run(sys.argv)
