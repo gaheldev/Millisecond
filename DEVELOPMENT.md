@@ -43,7 +43,6 @@ millisecond
 ### Deb
 
 #### First initialization
-Install [docker](https://docs.docker.com/engine/install/) for testing and the following dependencies:
 
 ```bash
 sudo apt-get install debhelper build-essential dh-make dh-python
@@ -61,6 +60,8 @@ make deb
 
 #### test
 
+Install [docker](https://docs.docker.com/engine/install/) for testing and the following dependencies:
+
 ```bash
 make test-deb
 ```
@@ -73,7 +74,7 @@ make test-deb
 - [ ] fill metainfo in data/
 - [ ] icons
 - [ ] make flatpak distributable
-    - [ ] bump flatpak version and changelog
+    - [x] bump flatpak version and changelog
     - [x] set up basic export
     - [x] properly require runner / system dependencies
     - [ ] setup for flathub
