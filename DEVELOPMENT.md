@@ -78,8 +78,6 @@ make test-deb
 
 ## TODO
 ### GUI
-- [ ] contact rtcqs author
-
 - [ ] pick flatpak url
 - [ ] fill metainfo in data/
 - [ ] icons
@@ -89,15 +87,7 @@ make test-deb
     - [x] properly require runner / system dependencies
     - [ ] setup for flathub
 
-- [ ] Readme
-- [ ] Credit rtcqs
-    - [ ] in README + current version
-    - [x] in app
-
 - [ ] use homemade dimmed for older gnome versions
-- [x] refresh diagnostic on fix
-- [x] refresh all button
-- [x] refresh diagnostics on refresh all
 - [ ] In-app explanations
 - [x] expanding row with:
     - [x] check emoji
@@ -106,12 +96,7 @@ make test-deb
     - [x] autofix button if autofix implemented
     - [x] info emoji for doc
     - [x] expandable area with rtcqs output
-- [x] group by importance? by type?
 - [ ] warning or error depending on importance of diagnostic
-- [x] only close button
-- [x] autofix
-
-- [x] Handle case where kernel configuration is not found
 
 ### rtfix
 - [ ] autofix
