@@ -14,29 +14,24 @@ Optimize your system for low latency audio.
 </a>
 </div>
 
-<br/>
+![image](https://github.com/user-attachments/assets/bfb949b5-359f-417b-8720-2a0fd0f72f39)
 
-
-Millisecond is a gtk frontend to [rctqs](https://codeberg.org/rtcqs/rtcqs). It currently provides system diagnostics and offers tips to fix it with links to detailed documentation from [linuxaudio wiki](https://wiki.linuxaudio.org/wiki/system_configuration).
+Millisecond is a gtk app based on [rctqs](https://codeberg.org/rtcqs/rtcqs). \
+It provides system diagnostics and offers tips to improve low latency performance for audio production, with links to detailed documentation from [linuxaudio wiki](https://wiki.linuxaudio.org/wiki/system_configuration).
 
 In future releases, I intend to allow running fixes from the app whenever possible.
 
-![image](https://github.com/user-attachments/assets/bfb949b5-359f-417b-8720-2a0fd0f72f39)
 
+# 🛠️ Installation
 
-# Installation
+### From package releases
+Install the latest deb (Ubuntu >= 24.04) or flatpak [release](https://github.com/gaheldev/Millisecond/releases/latest). \
+If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
 
-## From deb release
-On systems based on Debian Sid or Ubuntu 24.04 and later, preferably install the latest [deb release](https://github.com/gaheldev/Millisecond/releases/latest).
+>[!NOTE]
+> some minor functionnalities may not be available in the flatpak release
 
-## From flatpak release
-If flatpak is not installed on your system yet, follow [flathub's instructions](https://flathub.org/setup) for your system.
-
-Then simply  install the latest [flatpak release](https://github.com/gaheldev/Millisecond/releases/latest).
-
-Note that some minor functionnalities may not be available in the flatpak release.
-
-## Manual installation
+### Manual installation
 
 You'll need to install dev dependencies first, for reference on Ubuntu:
 ```bash
@@ -54,6 +49,6 @@ meson setup build/
 meson install -C build/
 ```
 
-# Contributions
-It would be lovely to get icon contributions that follow [flathub's standards](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app.
+# 🧑‍🤝‍🧑 Contributions
+It would be lovely to get icon contributions that follow [flathub's standards](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app there.
 
