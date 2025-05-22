@@ -42,6 +42,7 @@ release:
 	@echo ====================================
 	@git add -p
 	@git commit -m "Bump version to $$(cat NEW_VERSION)"
+	@git commit --amend
 	@git tag v$$(cat NEW_VERSION)
 	@rm NEW_VERSION
 
