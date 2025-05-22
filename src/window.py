@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gtk, GObject
+from gi.repository import Adw, Gtk, GObject, GLib, Gio
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
@@ -43,6 +43,9 @@ class MillisecondWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
         self.rtcqs = Rtcqs()
         self.rtcqs.main()
+
+        self.show_dangerous_optimizations = False
+        self.setup_dangerous_optimizations_action()
 
         # declare widgets
         self.toolbar_view = self.get_content()
@@ -137,9 +140,12 @@ class MillisecondWindow(Adw.ApplicationWindow):
             self.preempt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.kernel_group.add(self.preempt_diagnostic_row)
 
-            self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations", "#disabling_spectre_and_meltdown_mitigations")
+            self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations",
+                                                            wiki_anchor="#disabling_spectre_and_meltdown_mitigations",
+                                                            subtitle="Dangerous optimization")
             self.mitigations_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.kernel_group.add(self.mitigations_diagnostic_row)
+            self.mitigations_diagnostic_row.set_visible(self.show_dangerous_optimizations)
 
         # I/O diagnostics
 
@@ -180,6 +186,44 @@ class MillisecondWindow(Adw.ApplicationWindow):
 
     def _on_diagnostic_updated(self, _):
         self.refresh()
+
+    def setup_dangerous_optimizations_action(self):
+        toggle_action = Gio.SimpleAction.new_stateful(
+            "toggle-dangerous-optimizations",
+            None,  # No parameter type
+            GLib.Variant.new_boolean(self.show_dangerous_optimizations)  # Initial state
+        )
+        toggle_action.connect("activate", self.on_toggle_dangerous_optimizations)
+        self.add_action(toggle_action)
+
+    def on_toggle_dangerous_optimizations(self, action, parameter):
+        current_state = action.get_state().get_boolean()
+        new_state = not current_state
+
+        # Update the action's state (this updates the UI checkmark)
+        action.set_state(GLib.Variant.new_boolean(new_state))
+
+        if new_state:
+            self.show_dangerous_optimizations_warning()
+
+        self.show_dangerous_optimizations = new_state
+        self.mitigations_diagnostic_row.set_visible(self.show_dangerous_optimizations)
+
+        print(f"Dangerous optimizations: {'ENABLED' if new_state else 'DISABLED'}")
+
+    def show_dangerous_optimizations_warning(self):
+        dialog = Adw.MessageDialog.new(
+            self,
+            "⚠️ Warning:",
+            "\nYou have enabled optimizations that could compromise your system's security.\n\nUse with extreme caution!"
+        )
+
+        dialog.add_response("ok", "I Understand")
+        dialog.set_response_appearance("ok", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.set_default_response("ok")
+        dialog.set_close_response("ok")
+
+        dialog.present()
 
     def refresh(self):
         self.rtcqs.main()

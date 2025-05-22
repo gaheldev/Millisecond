@@ -32,7 +32,7 @@ class DiagnosticRow(Adw.ExpanderRow):
 
     updated = GObject.Signal('updated')
 
-    def __init__(self, root_window: Adw.ApplicationWindow, cqs, check_name: str, wiki_anchor: str|None=None, autofix_dialog: Adw.Dialog|None=None, **kwargs):
+    def __init__(self, root_window: Adw.ApplicationWindow, cqs, check_name: str, wiki_anchor: str|None=None, autofix_dialog: Adw.Dialog|None=None, subtitle: str|None=None, **kwargs):
         super().__init__(**kwargs)
 
         self.root_window = root_window
@@ -50,7 +50,8 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.add_css_class("toolbar")
 
         self.set_title(self.title())
-        # self.set_subtitle("Use performance governor to limit xruns")
+        if subtitle is not None:
+            self.set_subtitle(subtitle)
 
         self.status_icon = StatusIcon(status)
         self.add_prefix(self.status_icon)

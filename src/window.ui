@@ -34,6 +34,13 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">_⚠️ Show Dangerous Optimizations</attribute>
+        <attribute name="action">win.toggle-dangerous-optimizations</attribute>
+        <attribute name="verb-icon">security-low-symbolic</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
       </item>

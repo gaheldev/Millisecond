@@ -277,7 +277,9 @@ class Rtcqs:
             self.status[check] = False
             self.output[check] = "Kernel with Spectre/Meltdown mitigations " \
                 "found. This could have a negative impact on the " \
-                "performance of your system. See also " \
+                "performance of your system. " \
+                "Disabling mitigations compromises your computer's security. " \
+                "Only consider it for fully offline systems. See also " \
                 f"{self.wiki_url}{wiki_anchor}"
         else:
             self.status[check] = True
