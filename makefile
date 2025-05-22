@@ -1,7 +1,7 @@
-.PHONY: install run uninstall setup-deb deb bump-deb compile test-deb release
+.PHONY: install run uninstall setup-deb deb bump-deb setup compile test-deb release
 
 
-all: install run
+all: setup compile install run
 
 
 run: 
@@ -19,6 +19,10 @@ uninstall:
 	sudo rm -rf /usr/local/share/millisecond/
 	sudo rm /usr/local/share/dbus-1/services/io.github.gaheldev.Millisecond.service
 	sudo rm /usr/local/bin/millisecond
+
+
+setup:
+	meson setup --reconfigure build
 
 
 compile:
