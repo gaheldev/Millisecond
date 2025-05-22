@@ -51,5 +51,6 @@ meson install -C build/
 ```
 
 # 🧑‍🤝‍🧑 Contributions
-It would be lovely to get icon contributions that follow [gnome's standard](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app.
+It would be lovely to get icon contributions that follow [gnome's standard](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app. \
+Check out [issue #1](https://github.com/gaheldev/Millisecond/issues/1)
 
