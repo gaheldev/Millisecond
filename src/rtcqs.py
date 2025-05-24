@@ -302,7 +302,7 @@ class Rtcqs:
             self.status[check] = False
             self.output[check] = "Could not assign a 80 rtprio SCHED_FIFO " \
                 f"value due to the following error: {e}. Set up " \
-                f"imits.conf. See also {self.wiki_url}{wiki_anchor}"
+                f"limits.conf. See also {self.wiki_url}{wiki_anchor}"
         else:
             self.status[check] = True
             self.output[check] = "Realtime priorities can be set."
