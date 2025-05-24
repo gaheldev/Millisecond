@@ -24,7 +24,7 @@ import subprocess
 
 from gi.repository import Adw, Gtk, GObject
 
-from .utils import is_flatpak
+from .utils import is_flatpak, run_cmd
 
 class Swappiness:
     def __init__(self) -> None:
@@ -100,3 +100,55 @@ class SwappinessDialog(Adw.AlertDialog):
         self.swap.set(10)
         self.fixed.emit()
 
+
+class Governor:
+    def __init__(self) -> None:
+        # FIXME: check for all possible utilities and use the best installed one?
+        self.utility: str = "cpupower"
+
+    def set_performance(self):
+        cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g performance"]
+        _ = run_cmd(cmd)
+
+    def set_powersave(self):
+        cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g powersave"]
+        _ = run_cmd(cmd)
+
+
+# FIXME: allow to open dialog even when fixed but don't empasize button
+class GovernorDialog(Adw.PreferencesDialog):
+    __gtype_name__ = "GovernorDialog"
+
+    updated = GObject.Signal('updated')
+    fixed = GObject.Signal('fixed')
+    fixing = GObject.Signal('fixing')
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+
+        self.governor = Governor()
+        super().set_title("Governor")
+
+        self.preferences_page = Adw.PreferencesPage()
+        self.preferences_group = Adw.PreferencesGroup()
+
+        self.performance_switch = Adw.SwitchRow()
+        self.performance_switch.set_title('Use performance governor')
+        self.performance_switch.connect("notify::active", self.on_performance_changed)
+
+        self.persistence_switch = Adw.SwitchRow()
+        self.persistence_switch.set_title('Persist over restart')
+
+        # FIXME: implement persistence over reboot
+        self.preferences_group.add(self.performance_switch)
+        self.preferences_group.add(self.persistence_switch)
+
+        self.preferences_page.add(self.preferences_group)
+        super().add(self.preferences_page)
+
+    def on_performance_changed(self, switch, _):
+        if switch.get_active():
+            self.governor.set_performance()
+        else:
+            self.governor.set_powersave()
+        self.updated.emit()
