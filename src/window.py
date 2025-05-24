@@ -21,7 +21,7 @@ from gi.repository import Adw, Gtk, GObject, GLib, Gio
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
-# from .rtfix import SwappinessDialog
+from .rtfix import SwappinessDialog, GovernorDialog
 from .utils import is_flatpak
 
 @Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
@@ -110,7 +110,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.cpu_group = Adw.PreferencesGroup()
         self.cpu_group.set_title("CPU")
 
-        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling")
+        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling", GovernorDialog())
         self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.governor_diagnostic_row)
 
