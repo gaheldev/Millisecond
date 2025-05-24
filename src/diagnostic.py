@@ -51,6 +51,7 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.bad_diagnosis_importance = bad_diagnosis_importance
 
         if autofix_dialog is not None:
+            autofix_dialog.updated.connect(self.on_updated)
             autofix_dialog.fixing.connect(self.on_fixing)
             autofix_dialog.fixed.connect(self.on_fixed)
 
@@ -109,6 +110,9 @@ class DiagnosticRow(Adw.ExpanderRow):
 
     def on_fixing(self, _) -> None:
         pass
+
+    def on_updated(self, _) -> None:
+        self.updated.emit()
 
     def on_fixed(self, _) -> None:
         self.updated.emit()
