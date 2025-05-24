@@ -18,6 +18,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
+import subprocess
 
 def is_flatpak():
     """
@@ -25,3 +26,8 @@ def is_flatpak():
     Returns True if in Flatpak, False otherwise.
     """
     return os.path.exists('/.flatpak-info')
+
+def run_cmd(cmd: list[str]) -> subprocess.CompletedProcess[bytes]:
+    if is_flatpak():
+        cmd = ["flatpak-spawn", "--host"] + cmd
+    subprocess.run(cmd)
