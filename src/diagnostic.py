@@ -26,6 +26,7 @@ class DiagnosticStatus(Enum):
     Unoptimized = 1
     Optional = 2
     Optimized = 3
+    PermanentlyOptimized = 4
 
 
 class DiagnosticRow(Adw.ExpanderRow):
@@ -54,6 +55,9 @@ class DiagnosticRow(Adw.ExpanderRow):
             autofix_dialog.updated.connect(self.on_updated)
             autofix_dialog.fixing.connect(self.on_fixing)
             autofix_dialog.fixed.connect(self.on_fixed)
+            self.is_fix_permanent = autofix_dialog.is_fix_permanent
+        else:
+            self.is_fix_permanent = True
 
         status = self.status()
         fix_exists = autofix_dialog is not None
@@ -86,7 +90,10 @@ class DiagnosticRow(Adw.ExpanderRow):
 
     def status(self) -> DiagnosticStatus:
         if self.rtcqs.status[self.check_name]:
-            return DiagnosticStatus.Optimized
+            if self.is_fix_permanent:
+                return DiagnosticStatus.PermanentlyOptimized
+            else:
+                return DiagnosticStatus.Optimized
         return self.bad_diagnosis_importance
 
     def title(self) -> str:
@@ -142,7 +149,7 @@ class StatusIcon(Gtk.Image):
             case DiagnosticStatus.Optional:
                 self.set_from_icon_name(self.optional_icon)
                 self.set_tooltip_text("Optional - may or may not provide gains")
-            case DiagnosticStatus.Optimized:
+            case DiagnosticStatus.Optimized | DiagnosticStatus.PermanentlyOptimized:
                 self.set_from_icon_name(self.ok_icon)
                 self.add_css_class("success")
                 self.set_tooltip_text("Optimized")
@@ -182,6 +189,9 @@ class FixButton(Gtk.Button):
         self.set_visible(self.fix_exists)
         match status:
             case DiagnosticStatus.Optimized:
+                self.set_tooltip_text("nothing to do")
+                self.set_sensitive(True)
+            case DiagnosticStatus.PermanentlyOptimized:
                 self.set_tooltip_text("nothing to do")
                 self.set_sensitive(False)
                 self.add_css_class("dimmed")
