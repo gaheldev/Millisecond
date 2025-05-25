@@ -24,7 +24,7 @@ import subprocess
 
 from gi.repository import Adw, Gtk, GObject
 
-from .utils import is_flatpak, run_cmd
+from .utils import is_flatpak, run_cmd, cmd_exists
 
 class Swappiness:
     def __init__(self) -> None:
@@ -67,11 +67,14 @@ class Swappiness:
 class SwappinessDialog(Adw.AlertDialog):
     __gtype_name__ = "SwappinessDialog"
 
+    updated = GObject.Signal('updated')
     fixed = GObject.Signal('fixed')
     fixing = GObject.Signal('fixing')
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
+
+        self.is_fix_permanent = True
 
         self.swap = Swappiness()
         super().set_heading("Set swappiness to 10?")
@@ -104,9 +107,12 @@ class SwappinessDialog(Adw.AlertDialog):
 class Governor:
     def __init__(self) -> None:
         # FIXME: check for all possible utilities and use the best installed one?
-        self.utility: str = "cpupower"
+        self.utility: str = "cpupower" if cmd_exists("cpupower") else None
 
-    def set_performance(self):
+    def utility_found(self) -> bool:
+        return cmd_exists("cpupower")
+
+    def set_performance(self) -> bool:
         cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g performance"]
         _ = run_cmd(cmd)
 
@@ -115,7 +121,7 @@ class Governor:
         _ = run_cmd(cmd)
 
 
-# FIXME: allow to open dialog even when fixed but don't empasize button
+# FIXME: use interface for what is common to all Dialogs
 class GovernorDialog(Adw.PreferencesDialog):
     __gtype_name__ = "GovernorDialog"
 
@@ -126,22 +132,34 @@ class GovernorDialog(Adw.PreferencesDialog):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
 
+        self.is_fix_permanent = False
+
         self.governor = Governor()
         super().set_title("Governor")
 
         self.preferences_page = Adw.PreferencesPage()
         self.preferences_group = Adw.PreferencesGroup()
 
-        self.performance_switch = Adw.SwitchRow()
-        self.performance_switch.set_title('Use performance governor')
-        self.performance_switch.connect("notify::active", self.on_performance_changed)
+        if self.governor.utility_found():
+            self.label = Gtk.Label()
+            self.label.set_text(" Performance mode will continuously run your CPU at higher frequencies.\nYou can change this back later.")
+            self.preferences_group.add(self.label)
 
-        self.persistence_switch = Adw.SwitchRow()
-        self.persistence_switch.set_title('Persist over restart')
+            self.performance_switch = Adw.SwitchRow()
+            self.performance_switch.set_title('Use performance governor')
+            # FIXME: use another signal so the state is not changed if performanced is not changed (by not entering password)
+            self.performance_switch.connect("notify::active", self.on_performance_changed)
+            self.preferences_group.add(self.performance_switch)
 
-        # FIXME: implement persistence over reboot
-        self.preferences_group.add(self.performance_switch)
-        self.preferences_group.add(self.persistence_switch)
+            # TODO: implement persistence over reboot?
+            # self.persistence_switch = Adw.SwitchRow()
+            # self.persistence_switch.set_title('Persist over restart')
+            # self.preferences_group.add(self.persistence_switch)
+
+        else:
+            self.error_label = Gtk.Label()
+            self.error_label.set_text("cpupower utility not found")
+            self.preferences_group.add(self.error_label)
 
         self.preferences_page.add(self.preferences_group)
         super().add(self.preferences_page)
