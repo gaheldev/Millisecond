@@ -18,16 +18,20 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
-import subprocess
+import subprocess as sp
 
 def is_flatpak():
-    """
-    Detect if the current process is running inside a Flatpak sandbox.
+    """Detect if the current process is running inside a Flatpak sandbox.
     Returns True if in Flatpak, False otherwise.
     """
     return os.path.exists('/.flatpak-info')
 
-def run_cmd(cmd: list[str]) -> subprocess.CompletedProcess[bytes]:
+def run_cmd(cmd: list[str]) -> sp.CompletedProcess[bytes]:
     if is_flatpak():
         cmd = ["flatpak-spawn", "--host"] + cmd
-    subprocess.run(cmd)
+    return sp.run(cmd)
+
+def cmd_exists(cmd: str) -> bool:
+    """Check if command line tool `cmd` exists"""
+    return run_cmd(["which", "cpupower"]).returncode == 0
+
