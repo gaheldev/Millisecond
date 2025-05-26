@@ -33,5 +33,4 @@ def run_cmd(cmd: list[str]) -> sp.CompletedProcess[bytes]:
 
 def cmd_exists(cmd: str) -> bool:
     """Check if command line tool `cmd` exists"""
-    return run_cmd(["which", "cpupower"]).returncode == 0
-
+    return run_cmd(["which", cmd]).returncode == 0
