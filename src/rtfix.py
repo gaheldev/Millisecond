@@ -26,6 +26,54 @@ from gi.repository import Adw, Gtk, GObject
 
 from .utils import is_flatpak, run_cmd, cmd_exists
 
+
+
+def autofix(cls):
+    """Decorator to enforce autofix dialog implements required properties and methods"""
+    if not callable(getattr(cls, 'refresh')):
+        raise TypeError(f"{cls.__name__} must implement a callable method 'refresh'")
+
+    signals = ["updated", "fixed", "fixing"]
+    for signal in signals:
+        if not hasattr(cls, signal):
+            raise TypeError(f"{cls.__name__} must implement a \"{signal}\" signal")
+
+    # TODO: find a way to check for properties initilized in __init__
+    properties = ["rtcqs", "check_name", "is_fix_permanent"]
+
+    return cls
+
+###############################################################################
+# due to pygobject not supporting multiple inheritance we can't use abstract
+# class to enforce some properties and methods
+# @autofix decorator checks for required method and signals, but not for properties
+# use the example below to create a new autofix dialog (can inherit from any kind of dialog)
+
+@autofix # checks that required method and signals are implemented
+class ExampleDialog(Adw.Dialog):
+    __gtype_name__ = "ExampleDialog"
+
+    # required signals
+    updated = GObject.Signal('updated')
+    fixed = GObject.Signal('fixed')
+    fixing = GObject.Signal('fixing')
+
+    def __init__(self, cqs, check_name, **kwargs) -> None:
+        super().__init__(**kwargs)
+
+        # required properties
+        self.rtcqs = cqs
+        self.check_name = check_name
+        self.is_fix_permanent = True # if dialog can be shown again once fixed
+
+        # implement the rest of init afterwards
+
+    # required
+    def refresh(self) -> None:
+        ...
+
+###############################################################################
+
 class Swappiness:
     def __init__(self) -> None:
         # FIXME: doesn't exist or not read on startup in some systems
@@ -64,6 +112,7 @@ class Swappiness:
             subprocess.run(["pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
 
 
+@autofix
 class SwappinessDialog(Adw.AlertDialog):
     __gtype_name__ = "SwappinessDialog"
 
@@ -74,29 +123,22 @@ class SwappinessDialog(Adw.AlertDialog):
     def __init__(self, cqs, check_name, **kwargs) -> None:
         super().__init__(**kwargs)
 
-        # abstract
         self.rtcqs = cqs
-        # abstract
         self.check_name = check_name
-        # abstract
         self.is_fix_permanent = True
 
         self.swap = Swappiness()
         super().set_heading("Set swappiness to 10?")
         super().set_body("This will modify /etc/sysctl.conf, changes are definitive.")
 
-        # Add response buttons
         super().add_response("cancel", "Cancel")
         super().add_response("ok", "OK")
         
-        # Set "ok" as the default response
         super().set_default_response("ok")
         super().set_close_response("cancel")
         
-        # Set "ok" as the suggested (highlighted) action
         super().set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED)
         
-        # Connect to the response signal
         super().connect("response", self.on_dialog_response)
 
     def on_dialog_response(self, _, response):
@@ -109,7 +151,7 @@ class SwappinessDialog(Adw.AlertDialog):
         self.fixed.emit()
 
     def refresh(self) -> None:
-        pass
+        ...
 
 
 class Governor:
@@ -124,16 +166,15 @@ class Governor:
         cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g performance"]
         return run_cmd(cmd).returncode == 0
 
-    def set_powersave(self):
+    def set_powersave(self) -> bool:
         cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g powersave"]
         return run_cmd(cmd).returncode == 0
 
 
-# FIXME: use interface for what is common to all Dialogs
+@autofix
 class GovernorDialog(Adw.PreferencesDialog):
     __gtype_name__ = "GovernorDialog"
 
-    # abstract
     updated = GObject.Signal('updated')
     fixed = GObject.Signal('fixed')
     fixing = GObject.Signal('fixing')
@@ -141,11 +182,8 @@ class GovernorDialog(Adw.PreferencesDialog):
     def __init__(self, cqs, check_name, **kwargs) -> None:
         super().__init__(**kwargs)
 
-        # abstract
         self.rtcqs = cqs
-        # abstract
         self.check_name = check_name
-        # abstract
         self.is_fix_permanent = False
 
         self.governor = Governor()
@@ -175,6 +213,8 @@ class GovernorDialog(Adw.PreferencesDialog):
         self.preferences_page.add(self.preferences_group)
         super().add(self.preferences_page)
 
+    # FIXME: error on second change
+    #   -> change power -> change back (guard is active)
     def on_switch_changed(self, switch, _):
         if self.switch_guard:
             self.switch_guard = False
@@ -192,7 +232,6 @@ class GovernorDialog(Adw.PreferencesDialog):
                 switch.set_active(True)
         self.updated.emit()
 
-    # abstract
     def refresh(self):
         self.switch_guard = True
         self.performance_switch.set_active(self.rtcqs.status[self.check_name])
