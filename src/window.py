@@ -110,7 +110,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.cpu_group = Adw.PreferencesGroup()
         self.cpu_group.set_title("CPU")
 
-        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", DiagnosticStatus.Unoptimized, "#cpu_frequency_scaling", GovernorDialog())
+        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", DiagnosticStatus.Unoptimized, "#cpu_frequency_scaling", GovernorDialog(self.rtcqs, "governor"))
         self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.governor_diagnostic_row)
 
@@ -154,7 +154,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.io_group.set_title("I/O")
 
         # FIXME: make swappiness fix more reliable on recent ubuntu
-        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", DiagnosticStatus.Unoptimized, "#sysctlconf", SwappinessDialog())
+        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", DiagnosticStatus.Unoptimized, "#sysctlconf", SwappinessDialog(self.rtcqs, "swappiness"))
         self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.swap_diagnostic_row)
 
