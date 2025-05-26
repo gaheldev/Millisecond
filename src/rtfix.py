@@ -107,18 +107,18 @@ class SwappinessDialog(Adw.AlertDialog):
 class Governor:
     def __init__(self) -> None:
         # FIXME: check for all possible utilities and use the best installed one?
-        self.utility: str = "cpupower" if cmd_exists("cpupower") else None
+        self.utility = "cpupower" if cmd_exists("cpupower") else None
 
     def utility_found(self) -> bool:
         return cmd_exists("cpupower")
 
     def set_performance(self) -> bool:
         cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g performance"]
-        _ = run_cmd(cmd)
+        return run_cmd(cmd).returncode == 0
 
     def set_powersave(self):
         cmd = ["pkexec", "bash", "-c" , "cpupower frequency-set -g powersave"]
-        _ = run_cmd(cmd)
+        return run_cmd(cmd).returncode == 0
 
 
 # FIXME: use interface for what is common to all Dialogs
@@ -147,14 +147,10 @@ class GovernorDialog(Adw.PreferencesDialog):
 
             self.performance_switch = Adw.SwitchRow()
             self.performance_switch.set_title('Use performance governor')
-            # FIXME: use another signal so the state is not changed if performanced is not changed (by not entering password)
-            self.performance_switch.connect("notify::active", self.on_performance_changed)
-            self.preferences_group.add(self.performance_switch)
+            self.performance_switch.connect("notify::active", self.on_switch_changed)
+            self.switch_guard = False # blocks recursion
 
-            # TODO: implement persistence over reboot?
-            # self.persistence_switch = Adw.SwitchRow()
-            # self.persistence_switch.set_title('Persist over restart')
-            # self.preferences_group.add(self.persistence_switch)
+            self.preferences_group.add(self.performance_switch)
 
         else:
             self.error_label = Gtk.Label()
@@ -164,9 +160,20 @@ class GovernorDialog(Adw.PreferencesDialog):
         self.preferences_page.add(self.preferences_group)
         super().add(self.preferences_page)
 
-    def on_performance_changed(self, switch, _):
+    def on_switch_changed(self, switch, _):
+        if self.switch_guard:
+            self.switch_guard = False
+            return
+
         if switch.get_active():
-            self.governor.set_performance()
+            ok = self.governor.set_performance()
+            if not ok:
+                self.switch_guard = True
+                switch.set_active(False)
         else:
-            self.governor.set_powersave()
+            ok = self.governor.set_powersave()
+            if not ok:
+                self.switch_guard = True
+                switch.set_active(True)
         self.updated.emit()
+
