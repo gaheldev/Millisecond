@@ -71,9 +71,14 @@ class SwappinessDialog(Adw.AlertDialog):
     fixed = GObject.Signal('fixed')
     fixing = GObject.Signal('fixing')
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, cqs, check_name, **kwargs) -> None:
         super().__init__(**kwargs)
 
+        # abstract
+        self.rtcqs = cqs
+        # abstract
+        self.check_name = check_name
+        # abstract
         self.is_fix_permanent = True
 
         self.swap = Swappiness()
@@ -103,6 +108,9 @@ class SwappinessDialog(Adw.AlertDialog):
         self.swap.set(10)
         self.fixed.emit()
 
+    def refresh(self) -> None:
+        pass
+
 
 class Governor:
     def __init__(self) -> None:
@@ -125,13 +133,19 @@ class Governor:
 class GovernorDialog(Adw.PreferencesDialog):
     __gtype_name__ = "GovernorDialog"
 
+    # abstract
     updated = GObject.Signal('updated')
     fixed = GObject.Signal('fixed')
     fixing = GObject.Signal('fixing')
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, cqs, check_name, **kwargs) -> None:
         super().__init__(**kwargs)
 
+        # abstract
+        self.rtcqs = cqs
+        # abstract
+        self.check_name = check_name
+        # abstract
         self.is_fix_permanent = False
 
         self.governor = Governor()
@@ -147,6 +161,7 @@ class GovernorDialog(Adw.PreferencesDialog):
 
             self.performance_switch = Adw.SwitchRow()
             self.performance_switch.set_title('Use performance governor')
+            self.performance_switch.set_active(self.rtcqs.status[self.check_name])
             self.performance_switch.connect("notify::active", self.on_switch_changed)
             self.switch_guard = False # blocks recursion
 
@@ -177,3 +192,7 @@ class GovernorDialog(Adw.PreferencesDialog):
                 switch.set_active(True)
         self.updated.emit()
 
+    # abstract
+    def refresh(self):
+        self.switch_guard = True
+        self.performance_switch.set_active(self.rtcqs.status[self.check_name])

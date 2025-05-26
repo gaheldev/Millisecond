@@ -40,6 +40,7 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.rtcqs = cqs
         self.check_name = check_name
         self.wiki_anchor = wiki_anchor
+        self.autofix_dialog = autofix_dialog
 
         if autofix_dialog is not None:
             autofix_dialog.updated.connect(self.on_updated)
@@ -104,6 +105,8 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.status_icon.set_status(status)
         self.fix_button.set_status(status)
         self.diagnostic_view.set_text(self.diagnostic())
+        if self.autofix_dialog is not None:
+            self.autofix_dialog.refresh()
 
     def on_fixing(self, _) -> None:
         pass
