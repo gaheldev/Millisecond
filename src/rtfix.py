@@ -233,5 +233,7 @@ class GovernorDialog(Adw.PreferencesDialog):
         self.updated.emit()
 
     def refresh(self):
-        self.switch_guard = True
-        self.performance_switch.set_active(self.rtcqs.status[self.check_name])
+        check_status = self.rtcqs.status[self.check_name]
+        if self.performance_switch.get_active() != check_status:
+            self.switch_guard = True
+            self.performance_switch.set_active(check_status)
