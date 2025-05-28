@@ -103,13 +103,12 @@ class Swappiness:
         else:
             conf = vm_re.sub(new_swap, conf)
 
+        # FIXME: doesn't work with flatpak
+        # test on deb?
         with open(self.tmp_file, 'w') as f:
             f.write(conf)
 
-        if is_flatpak():
-            subprocess.run(["flatpak-spawn", "--host", "pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
-        else:
-            subprocess.run(["pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
+        run_cmd(["pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
 
 
 @autofix
