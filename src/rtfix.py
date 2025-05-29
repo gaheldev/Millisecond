@@ -18,7 +18,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import re
-import resource
 import subprocess
 
 from gi.repository import Adw, Gtk, GObject
