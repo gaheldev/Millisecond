@@ -57,6 +57,7 @@ class MillisecondApplication(Adw.Application):
                                 application_icon='io.github.gaheldev.Millisecond',
                                 developer_name='Gahel',
                                 version=self.version,
+                                issue_url='https://github.com/gaheldev/Millisecond/issues',
                                 developers=['Gahel', 'Jeremy Jongepier'],
                                 copyright='© 2025 Gahel')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
