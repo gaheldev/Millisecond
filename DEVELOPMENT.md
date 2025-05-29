@@ -87,28 +87,17 @@ make test-deb
     - [ ] setup for flathub
 
 - [ ] use homemade dimmed for older gnome versions
-- [ ] In-app explanations
-- [x] expanding row with:
-    - [x] check emoji
-    - [x] Title from rtcqs
-    - [ ] Subtitle ?
-    - [x] autofix button if autofix implemented
-    - [x] info emoji for doc
-    - [x] expandable area with rtcqs output
 - [ ] warning or error depending on importance of diagnostic
 
 ### rtfix
 - [ ] autofix
     - [ ] audio group
     - [ ] preempt=full
-    - [x] swappiness `sysctl -p` to update
-        - [ ] new ubuntu distributions (and others?) do not use /etc/sysctl.conf anymore: see [ubuntu discusion](https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/2084376)
-- [ ] tests
-    - [ ] swappiness
 
 ### Flatpak
 - [x] Need access to system to perform checks (see [sandbox permissions](https://docs.flatpak.org/en/latest/sandbox-permissions.html))
 - [ ] Fix filesystem check in flatpak
 - [ ] Fix /proc access?
 
-
+### Issues
+- [ ] referencing pkexec problem on at least ubuntu 24.10 (pkexec hangs, for example `pkexec gedit`)

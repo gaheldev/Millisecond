@@ -18,6 +18,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
+import pwd
+import grp
 import subprocess as sp
 
 def is_flatpak():
@@ -26,11 +28,43 @@ def is_flatpak():
     """
     return os.path.exists('/.flatpak-info')
 
+
 def run_cmd(cmd: list[str]) -> sp.CompletedProcess[bytes]:
     if is_flatpak():
         cmd = ["flatpak-spawn", "--host"] + cmd
     return sp.run(cmd)
 
+
 def cmd_exists(cmd: str) -> bool:
     """Check if command line tool `cmd` exists"""
     return run_cmd(["which", cmd]).returncode == 0
+
+
+def file_owner_id(filepath):
+    stat_info = os.stat(filepath)
+    return stat_info.st_uid
+
+
+def file_group_id(filepath):
+    stat_info = os.stat(filepath)
+    return stat_info.st_gid
+
+
+def file_owner(filepath):
+    uid = file_owner_id(filepath)
+    owner = pwd.getpwuid(uid).pw_name
+    return owner
+
+
+def file_group(filepath):
+    gid = file_group_id(filepath)
+    group = grp.getgrgid(gid).gr_name
+    return group
+
+
+def dir_exists(dirpath):
+    if is_flatpak():
+        return run_cmd(["bash", "-c", f"ls {dirpath} &>/dev/null"]).returncode == 0
+    else:
+        return os.path.isdir(dirpath)
+
