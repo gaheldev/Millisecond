@@ -17,14 +17,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
 import re
 import resource
 import subprocess
 
 from gi.repository import Adw, Gtk, GObject
 
-from .utils import is_flatpak, run_cmd, cmd_exists
+from .utils import is_flatpak, run_cmd, cmd_exists, dir_exists
 
 
 
@@ -76,8 +75,8 @@ class ExampleDialog(Adw.Dialog):
 
 class Swappiness:
     def __init__(self) -> None:
-        # FIXME: doesn't exist or not read on startup in some systems
         self.conf_path = "/etc/sysctl.conf"
+        self.multi_conf_dir = "/etc/sysctl.d"
         self.proc_path = "/proc/sys/vm/swappiness"
         self.tmp_file = "/tmp/sysctl.conf"
     
@@ -85,30 +84,37 @@ class Swappiness:
         with open(self.proc_path) as f:
             return int(f.read())
 
+    # FIXME: pkexec fails with manual installation on Ubuntu 24.10 (flatpak is fine)
     def set(self, value: int) -> None:
         assert value >= 0
         assert value <= 100
 
-        if is_flatpak():
-            conf = subprocess.check_output(["flatpak-spawn", "--host", "bash", "-c" , f"cat {self.conf_path}"]).decode('utf-8')
+        # recent ubuntu use /etc/sysctl.d/ for configuration
+        if dir_exists(self.multi_conf_dir):
+            conf_file = "/etc/sysctl.d/11-millisecond-swappiness.conf"
+            run_cmd(["pkexec", "bash", "-c" , f"echo vm.swappiness=10 > {conf_file} && sysctl -p {conf_file}"])
+
+        # other systems should use /etc/sysctl.conf
         else:
-            with open(self.conf_path) as f:
-                conf = f.read()
+            if is_flatpak():
+                conf = subprocess.check_output(["flatpak-spawn", "--host", "bash", "-c" , f"cat {self.conf_path}"]).decode('utf-8')
+            else:
+                with open(self.conf_path) as f:
+                    conf = f.read()
 
-        new_swap = f"vm.swappiness={value}"
-        vm_re = re.compile(r"vm.swappiness=\d+")
+            new_swap = f"vm.swappiness={value}"
+            vm_re = re.compile(r"vm.swappiness=\d+")
 
-        if vm_re.search(conf) is None:
-            conf = "\n".join([conf, new_swap])
-        else:
-            conf = vm_re.sub(new_swap, conf)
+            if vm_re.search(conf) is None:
+                conf = "\n".join([conf, new_swap])
+            else:
+                conf = vm_re.sub(new_swap, conf)
 
-        # FIXME: doesn't work with flatpak
-        # test on deb?
-        with open(self.tmp_file, 'w') as f:
-            f.write(conf)
+            with open(self.tmp_file, 'w') as f:
+                f.write(conf)
 
-        run_cmd(["pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
+            run_cmd(["pkexec", "bash", "-c" , f"cp {self.tmp_file} {self.conf_path} && sysctl -p"])
+
 
 
 @autofix
