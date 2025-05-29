@@ -42,6 +42,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.rtcqs = Rtcqs()
+        self.rtcqs.gui_status = True
         self.rtcqs.main()
 
         self.show_dangerous_optimizations = False
