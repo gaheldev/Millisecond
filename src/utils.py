@@ -37,7 +37,7 @@ def run_cmd(cmd: list[str]) -> sp.CompletedProcess[bytes]:
 
 def cmd_exists(cmd: str) -> bool:
     """Check if command line tool `cmd` exists"""
-    return run_cmd(["which", cmd]).returncode == 0
+    return run_cmd(["bash", "-c", f"which {cmd} &>/dev/null"]).returncode == 0
 
 
 def file_owner_id(filepath):
