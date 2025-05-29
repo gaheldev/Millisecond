@@ -189,15 +189,19 @@ class GovernorDialog(Adw.PreferencesDialog):
         super().set_title("Governor")
 
         self.preferences_page = Adw.PreferencesPage()
+        self.explanations_group = Adw.PreferencesGroup()
         self.preferences_group = Adw.PreferencesGroup()
 
         if self.governor.utility_found():
             self.label = Gtk.Label()
-            self.label.set_text(" Performance mode will continuously run your CPU at higher frequencies.\nYou can change this back later.")
-            self.preferences_group.add(self.label)
+            self.label.set_text("Performance governor will use more power and generate more heat.\nWhen enabled, this overrides your desktop environment's governor.\n\nDisable it when you don't need it.")
+            self.label.set_wrap(True)
+            self.label.set_justify(Gtk.Justification.CENTER)
+            self.explanations_group.add(self.label)
 
             self.performance_switch = Adw.SwitchRow()
             self.performance_switch.set_title('Use performance governor')
+            self.performance_switch.set_subtitle('Continuously run CPU at high frequency')
             self.performance_switch.set_active(self.rtcqs.status[self.check_name])
             self.performance_switch.connect("notify::active", self.on_switch_changed)
             self.switch_guard = False # blocks recursion
@@ -209,11 +213,10 @@ class GovernorDialog(Adw.PreferencesDialog):
             self.error_label.set_text("cpupower utility not found")
             self.preferences_group.add(self.error_label)
 
+        self.preferences_page.add(self.explanations_group)
         self.preferences_page.add(self.preferences_group)
         super().add(self.preferences_page)
 
-    # FIXME: error on second change
-    #   -> change power -> change back (guard is active)
     def on_switch_changed(self, switch, _):
         if self.switch_guard:
             self.switch_guard = False
