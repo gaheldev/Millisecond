@@ -70,7 +70,7 @@ class GovernorDialog(Adw.PreferencesDialog):
             self.explanations_group.add(self.label)
 
             self.performance_switch = Adw.SwitchRow()
-            self.performance_switch.set_title('Use performance governor')
+            self.performance_switch.set_title('Use Performance Governor')
             self.performance_switch.set_subtitle('Continuously run CPU at high frequency')
             self.performance_switch.set_active(self.rtcqs.status[self.check_name])
             self.performance_switch.connect("notify::active", self.on_switch_changed)
