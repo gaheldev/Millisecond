@@ -32,8 +32,11 @@ millisecond_sources = [
   'window.py',
   'diagnostic.py',
   'rtcqs.py',
-  'rtfix.py',
-  'utils.py',
 ]
+
+install_subdir(
+  'rtfix',
+  install_dir: moduledir
+)
 
 install_data(millisecond_sources, install_dir: moduledir)
