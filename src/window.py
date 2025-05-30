@@ -21,8 +21,9 @@ from gi.repository import Adw, Gtk, GObject, GLib, Gio
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow, DiagnosticStatus
-from .rtfix import SwappinessDialog, GovernorDialog
-from .utils import is_flatpak
+from .rtfix.swappiness import SwappinessDialog
+from .rtfix.governor import GovernorDialog
+from .rtfix.utils import is_flatpak
 
 @Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
 class MillisecondWindow(Adw.ApplicationWindow):
