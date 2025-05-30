@@ -62,6 +62,13 @@ def file_group(filepath):
     return group
 
 
+def file_exists(filepath):
+    if is_flatpak():
+        return run_cmd(["test", "-f", filepath]).returncode == 0
+    else:
+        return os.path.isfile(filepath)
+
+
 def dir_exists(dirpath):
     if is_flatpak():
         return run_cmd(["bash", "-c", f"ls {dirpath} &>/dev/null"]).returncode == 0
