@@ -83,7 +83,6 @@ class SwappinessDialog(Adw.AlertDialog):
 
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = True
 
         self.swap = Swappiness()
         super().set_heading("Set swappiness to 10?")

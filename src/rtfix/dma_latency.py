@@ -65,7 +65,6 @@ class DMALatencyDialog(Adw.AlertDialog):
 
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = False
 
         self.dma_latency = DMALatency()
 
