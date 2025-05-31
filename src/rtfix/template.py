@@ -19,6 +19,11 @@
 
 from gi.repository import Adw, GObject
 
+# FIXME: autofix dialogs should be recreated on the fly everytime they're open
+#        -> do not create the dialog in in DiagnosticRow
+#        -> create dialog spawner
+#        -> spawn dialog on fix button clicked
+
 
 def autofix(cls):
     """Decorator to enforce autofix dialog implements required properties and methods"""
