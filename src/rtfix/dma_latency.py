@@ -45,9 +45,10 @@ class DMALatency:
             print("Couldn't find audio group")
             return
 
-        udev_rule = "DEVPATH==\"/devices/virtual/misc/cpu_dma_latency\", OWNER=\"root\", GROUP=\"" + audio_group + "\", MODE=\"0660\""
+        # escape \ and " once for python string so that " is escaped in echo
+        udev_rule = "DEVPATH==\\\"/devices/virtual/misc/cpu_dma_latency\\\", OWNER=\\\"root\\\", GROUP=\\\"" + audio_group + "\\\", MODE=\\\"0660\\\""
 
-        run_cmd(["pkexec", "bash", "-c" , f"echo {udev_rule} | tee {self.udev_path} && udevadm control --reload-rules && udevadm trigger"])
+        run_cmd(["pkexec", "bash", "-c" , "echo " + udev_rule + f" | tee {self.udev_path} && udevadm control --reload-rules && udevadm trigger"])
 
 
 
