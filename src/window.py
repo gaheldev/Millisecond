@@ -24,6 +24,7 @@ from .diagnostic import DiagnosticRow
 from .rtfix.swappiness import SwappinessDialog
 from .rtfix.governor import GovernorDialog
 from .rtfix.hyperthreading import HyperthreadingDialog
+from .rtfix.dma_latency import DMALatencyDialog
 from .rtfix.utils import is_flatpak
 
 @Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
@@ -121,7 +122,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.smt_diagnostic_row)
 
-        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface")
+        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface", DMALatencyDialog(self.rtcqs, "power_management"))
         self.power_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.power_diagnostic_row)
 
