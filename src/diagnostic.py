@@ -40,7 +40,7 @@ class DiagnosticRow(Adw.ExpanderRow):
                  check_name: str,
                  bad_diagnosis_importance: DiagnosticStatus=DiagnosticStatus.Unoptimized,
                  wiki_anchor: str|None=None,
-                 autofix_dialog: Adw.Dialog|None=None,
+                 dialog_spawner: Adw.Dialog|None=None,
                  subtitle: str|None=None,
                  **kwargs):
         super().__init__(**kwargs)
@@ -50,18 +50,15 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.check_name = check_name
         self.wiki_anchor = wiki_anchor
         self.bad_diagnosis_importance = bad_diagnosis_importance
-        self.autofix_dialog = autofix_dialog
+        self.dialog_spawner = dialog_spawner
+        self.dialog = None
+        self.is_fix_permanent = True
 
-        if autofix_dialog is not None:
-            autofix_dialog.updated.connect(self.on_updated)
-            autofix_dialog.fixing.connect(self.on_fixing)
-            autofix_dialog.fixed.connect(self.on_fixed)
-            self.is_fix_permanent = autofix_dialog.is_fix_permanent
-        else:
-            self.is_fix_permanent = True
+        if self.dialog_spawner is not None:
+            self.is_fix_permanent = self.dialog_spawner.is_fix_permanent
 
         status = self.status()
-        fix_exists = autofix_dialog is not None
+        fix_exists = self.dialog_spawner is not None
 
         self.add_css_class("toolbar")
 
@@ -83,11 +80,12 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.add_suffix(self.fix_button)
 
         if fix_exists:
-            self.fix_button.connect("clicked", autofix_dialog.present)
+            self.fix_button.connect("clicked", self.on_fix_button_clicked)
 
         self.diagnostic_view = DiagnosticView(self.diagnostic())
         self.add_row(self.diagnostic_view)
         self.diagnostic_view.get_parent().set_activatable(False) # prevent row from reacting to hover
+
 
     def status(self) -> DiagnosticStatus:
         if self.rtcqs.status[self.check_name]:
@@ -97,16 +95,31 @@ class DiagnosticRow(Adw.ExpanderRow):
                 return DiagnosticStatus.Optimized
         return self.bad_diagnosis_importance
 
+
     def title(self) -> str:
         return self.rtcqs.headline[self.check_name]
 
+
     def diagnostic(self) -> str:
         return self.rtcqs.output[self.check_name]
+
 
     def wiki_link(self) -> str|None:
         if self.wiki_anchor is None:
             return None
         return f"{self.rtcqs.wiki_url}{self.wiki_anchor}"
+
+
+    def on_fix_button_clicked(self, _):
+        if self.dialog_spawner is None:
+            return
+        self.dialog = self.dialog_spawner.spawn()
+
+        self.dialog.updated.connect(self.on_updated)
+        self.dialog.fixing.connect(self.on_fixing)
+        self.dialog.fixed.connect(self.on_fixed)
+        self.dialog.present(self.root_window)
+
 
     def refresh(self) -> None:
         """ refresh widgets when rtcqs is updated
@@ -115,14 +128,17 @@ class DiagnosticRow(Adw.ExpanderRow):
         self.status_icon.set_status(status)
         self.fix_button.set_status(status)
         self.diagnostic_view.set_text(self.diagnostic())
-        if self.autofix_dialog is not None:
-            self.autofix_dialog.refresh()
+        if self.dialog is not None:
+            self.dialog.refresh()
+
 
     def on_fixing(self, _) -> None:
         pass
 
+
     def on_updated(self, _) -> None:
         self.updated.emit()
+
 
     def on_fixed(self, _) -> None:
         self.updated.emit()
@@ -192,7 +208,7 @@ class FixButton(Gtk.Button):
         self.set_visible(self.fix_exists)
         match status:
             case DiagnosticStatus.Optimized:
-                self.set_tooltip_text("nothing to do")
+                self.set_tooltip_text("revert")
                 self.set_sensitive(True)
             case DiagnosticStatus.PermanentlyOptimized:
                 self.set_tooltip_text("nothing to do")
@@ -200,7 +216,7 @@ class FixButton(Gtk.Button):
                 self.add_css_class("dimmed")
             case _:
                 if self.fix_exists:
-                    self.set_tooltip_text("run fix")
+                    self.set_tooltip_text("fix")
                     self.set_sensitive(True)
                     self.add_css_class("accent")
                 else:

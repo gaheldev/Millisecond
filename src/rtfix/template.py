@@ -36,7 +36,7 @@ def autofix(cls):
             raise TypeError(f"{cls.__name__} must implement a \"{signal}\" signal")
 
     # TODO: find a way to check for properties initilized in __init__
-    properties = ["rtcqs", "check_name", "is_fix_permanent"]
+    properties = ["rtcqs", "check_name"]
 
     return cls
 
@@ -61,7 +61,6 @@ class ExampleDialog(Adw.Dialog):
         # required properties
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = True # if dialog can be shown again once fixed
 
         # implement the rest of init afterwards
 
@@ -70,3 +69,14 @@ class ExampleDialog(Adw.Dialog):
         ...
 
 ###############################################################################
+
+class FixDialogSpawner:
+    def __init__(self, dialog, rtcqs, check_name, is_fix_permanent) -> None:
+        self.dialog = dialog
+        self.rtcqs = rtcqs
+        self.check_name = check_name
+        self.is_fix_permanent = is_fix_permanent # if dialog can be shown again once fixed
+
+    def spawn(self, **kwargs) -> Adw.Dialog:
+        return self.dialog(self.rtcqs, self.check_name, **kwargs)
+

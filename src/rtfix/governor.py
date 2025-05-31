@@ -53,7 +53,6 @@ class GovernorDialog(Adw.PreferencesDialog):
 
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = False
 
         self.governor = Governor()
         super().set_title("Governor")
