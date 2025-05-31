@@ -30,8 +30,9 @@ class DMALatency:
     def __init__(self) -> None:
         self.conf_path = "/etc/security/limits.conf"
         self.udev_path = "/etc/udev/rules.d/99-cpu-dma-latency.millisecond.rules"
+        self.audio_group = self._get_audio_group()
     
-    def get_audio_group(self) -> str|None:
+    def _get_audio_group(self) -> str|None:
         """
         return name of group with rt priority if it exists
         (preferably audio, then realtime, then anything else)
@@ -40,13 +41,12 @@ class DMALatency:
         return 'audio'
 
     def allow(self) -> None:
-        audio_group = self.get_audio_group()
-        if audio_group is None:
+        if self.audio_group is None:
             print("Couldn't find audio group")
             return
 
         # escape \ and " once for python string so that " is escaped in echo
-        udev_rule = "DEVPATH==\\\"/devices/virtual/misc/cpu_dma_latency\\\", OWNER=\\\"root\\\", GROUP=\\\"" + audio_group + "\\\", MODE=\\\"0660\\\""
+        udev_rule = "DEVPATH==\\\"/devices/virtual/misc/cpu_dma_latency\\\", OWNER=\\\"root\\\", GROUP=\\\"" + self.audio_group + "\\\", MODE=\\\"0660\\\""
 
         run_cmd(["pkexec", "bash", "-c" , "echo " + udev_rule + f" | tee {self.udev_path} && udevadm control --reload-rules && udevadm trigger"])
 
@@ -65,21 +65,33 @@ class DMALatencyDialog(Adw.AlertDialog):
 
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = True
+        self.is_fix_permanent = False
 
         self.dma_latency = DMALatency()
-        super().set_heading("CPU DMA Latency")
-        super().set_body("Allow DAWs to set CPU DMA latency?\nChanges are definitive.")
 
-        super().add_response("cancel", "Cancel")
-        super().add_response("ok", "OK")
-        
-        super().set_default_response("ok")
-        super().set_close_response("cancel")
-        
-        super().set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED)
-        
-        super().connect("response", self.on_dialog_response)
+        if self.dma_latency.audio_group is None:
+            super().set_heading("CPU DMA Latency")
+            super().set_body("User is not part of a group with sufficient realtime priorities and memlock.")
+
+            super().add_response("cancel", "Cancel")
+
+            super().set_default_response("cancel")
+            super().set_close_response("cancel")
+
+            super().set_response_appearance("cancel", Adw.ResponseAppearance.SUGGESTED)
+        else:
+            super().set_heading("CPU DMA Latency")
+            super().set_body("Allow DAWs to set CPU DMA latency?\nChanges are definitive.")
+
+            super().add_response("cancel", "Cancel")
+            super().add_response("ok", "OK")
+
+            super().set_default_response("ok")
+            super().set_close_response("cancel")
+
+            super().set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED)
+
+            super().connect("response", self.on_dialog_response)
 
     def on_dialog_response(self, _, response):
         if response == 'ok':
