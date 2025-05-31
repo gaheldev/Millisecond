@@ -87,7 +87,7 @@ class SwappinessDialog(Adw.AlertDialog):
 
         self.swap = Swappiness()
         super().set_heading("Set swappiness to 10?")
-        super().set_body("This will modify /etc/sysctl.conf, changes are definitive.")
+        super().set_body("This will modify sysctl configuration in /etc/sysctl.conf or /etc/sysclt.d/, changes are definitive.")
 
         super().add_response("cancel", "Cancel")
         super().add_response("ok", "OK")
