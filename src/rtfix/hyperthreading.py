@@ -52,7 +52,6 @@ class HyperthreadingDialog(Adw.PreferencesDialog):
 
         self.rtcqs = cqs
         self.check_name = check_name
-        self.is_fix_permanent = False
 
         self.hyperthreading = Hyperthreading()
         super().set_title("Hyperthreading")

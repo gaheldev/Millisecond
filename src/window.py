@@ -21,6 +21,7 @@ from gi.repository import Adw, Gtk, GObject, GLib, Gio
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow
+from .rtfix.template import FixDialogSpawner
 from .rtfix.swappiness import SwappinessDialog
 from .rtfix.governor import GovernorDialog
 from .rtfix.hyperthreading import HyperthreadingDialog
@@ -114,15 +115,18 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.cpu_group = Adw.PreferencesGroup()
         self.cpu_group.set_title("CPU")
 
-        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling", GovernorDialog(self.rtcqs, "governor"))
+        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling",
+                                                     FixDialogSpawner(GovernorDialog, self.rtcqs, "governor", is_fix_permanent=False))
         self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.governor_diagnostic_row)
 
-        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", "#simultaneous_multithreading", HyperthreadingDialog(self.rtcqs, "smt") )
+        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", "#simultaneous_multithreading",
+                                                FixDialogSpawner(HyperthreadingDialog, self.rtcqs, "smt", is_fix_permanent=False))
         self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.smt_diagnostic_row)
 
-        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface", DMALatencyDialog(self.rtcqs, "power_management"))
+        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface",
+                                                  FixDialogSpawner(DMALatencyDialog, self.rtcqs, "power_management", is_fix_permanent=True))
         self.power_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.power_diagnostic_row)
 
@@ -157,8 +161,8 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.io_group.set_title("I/O")
 
         # FIXME: make swappiness fix more reliable on recent ubuntu
-        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf", SwappinessDialog(self.rtcqs, "swappiness"))
-        # self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf")
+        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf",
+                                                 FixDialogSpawner(SwappinessDialog, self.rtcqs, "swappiness", is_fix_permanent=True))
         self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.swap_diagnostic_row)
 
