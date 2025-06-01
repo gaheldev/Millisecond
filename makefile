@@ -56,6 +56,7 @@ setup-deb: compile
 
 
 bump-deb:
+	nvim data/io.github.gaheldev.Millisecond.metainfo.xml.in
 	dch -b --newversion "$(VERSION)" "Automated release of $(VERSION)"
 	nvim debian/changelog
 	# actually build
