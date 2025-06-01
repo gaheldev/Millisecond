@@ -91,6 +91,8 @@ make test-deb
 
 ### rtfix
 - [ ] autofix
+    - [ ] setup tests
+    - [ ] implement and test dma latency: find group with correct rtprio and memlock
     - [ ] audio group
     - [ ] preempt=full
 
