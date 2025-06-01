@@ -78,15 +78,8 @@ make test-deb
 
 ## TODO
 ### GUI
-- [ ] pick flatpak url
-- [ ] fill metainfo in data/
-    - [ ] screenshots
-    - [ ] version
-    - [ ] date
-    - [ ] description
-    - [ ] changes
-    - [ ] color scheme
 - [ ] icons
+- [ ] update metainfo theme when icon is ready
 - [ ] make flatpak distributable
     - [x] bump flatpak version and changelog
     - [x] set up basic export
