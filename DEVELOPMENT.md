@@ -89,6 +89,9 @@ make test-deb
 - [ ] use homemade dimmed for older gnome versions
 - [ ] warning or error depending on importance of diagnostic
 
+### rtcheck
+- [ ] add dedicated message for preempt dynamic kernel
+
 ### rtfix
 - [ ] autofix
     - [ ] setup tests

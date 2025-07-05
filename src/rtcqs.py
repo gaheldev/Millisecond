@@ -79,6 +79,33 @@ class Rtcqs:
 
         self.format_output(check)
 
+    def pipewire_priority_check(self):
+        """ if using pipewire: check pipewire, pipewire-pulse and wireplumber priorities
+            if pipewire is a service:
+                if not using rtkit -> use rtkit with setup from doc
+                if using RTKit but prio is too low -> link to pipewire doc to increase max rtprio conceeded by rtkit
+            if pipewire is not a service -> check audio/realtime group + getcap /usr/bin/pipewire has ep
+            if not using pipewire -> check audio/realtime group + check JACK?
+
+            TODO:
+                - is setcap required on /usr/bin/pipewire with rtkit?
+                - is audio/realtime group required when using rtkit?
+
+        """
+        pass
+
+    def audio_card_irq_check(self):
+        """ audio card should use irqs, which is automatically enable when using pro audio mode
+            TODO: read more doc and document exactly what is needed
+        """
+        pass
+
+    def usb_card_headroom_check(self):
+        """ audio card may require headroom which increases latency, try zero headroom and increase as long as you get xruns
+            TODO: create rtfix to set headroom?
+        """
+        pass
+
     def audio_group_check(self):
         check = "audio_group"
         self.headline[check] = "Group Limits"
@@ -290,6 +317,11 @@ class Rtcqs:
         self.format_output(check)
 
     def rt_prio_check(self):
+        # TODO:
+        #   - check for rtprio >= 89
+        #   - if using rtkit, check for rtkit allowing rtprio >= 89 too
+        #   - if using rtkit is rtprio necessary?
+
         check = "rt_prio"
         self.headline[check] = "RT Priorities"
         wiki_anchor = "#limitsconfaudioconf"
