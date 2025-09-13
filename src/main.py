@@ -59,6 +59,7 @@ class MillisecondApplication(Adw.Application):
                                 version=self.version,
                                 issue_url='https://github.com/gaheldev/Millisecond/issues',
                                 developers=['Gahel', 'Jeremy Jongepier'],
+                                artists=['Jakub Steiner'],
                                 copyright='© 2025 Gahel')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_('translator-credits'))
