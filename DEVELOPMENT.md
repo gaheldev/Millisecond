@@ -90,6 +90,8 @@ make test-deb
 - [ ] warning or error depending on importance of diagnostic
 
 ### rtcheck
+- [ ] check that usb devices (especially sound cards and webcams) are on different usb buses to not saturate bandwidth
+    -> use `lsusb` to get all devices, `lsusb -t` to get drivers and limits
 - [ ] add dedicated message for preempt dynamic kernel
 
 ### rtfix
