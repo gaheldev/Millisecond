@@ -55,9 +55,10 @@ meson install -C build/
 ```
 
 # 🧑‍🤝‍🧑 Contributions
-Pull requests and suggestions are very welcome.\
-If something doesn't work, please open issues.\
-If you'd like to contribute to the `rtcqs.py` script, please open a pr upstream to [rtcqs](https://codeberg.org/rtcqs/rtcqs). 
+Please open issues or submit a pull request if something doesn't work.\
+Modifications to the `rtcqs.py` script should preferably be submitted upstream to [rtcqs](https://codeberg.org/rtcqs/rtcqs). 
 
-- icon by [Jakub Steiner](https://github.com/jimmac) 
+
+### Acknowledgements
+- icons by [Jakub Steiner](https://github.com/jimmac) 
 
