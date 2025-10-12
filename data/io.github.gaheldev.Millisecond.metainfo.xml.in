@@ -63,6 +63,14 @@
   </screenshots>
 
   <releases>
+    <release version="0.1.2" date="2025-10-12">
+      <description translate="no">
+        <p>Release description</p>
+        <ul>
+          <li>Add icons by Jakub Steiner and several minor fixes</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.1" date="2025-05-22">
       <description translate="no">
         <p>Release description</p>
