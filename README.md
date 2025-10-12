@@ -3,6 +3,10 @@ Millisecond
 </h1>
 
 <p align='center'>
+<img src=https://raw.githubusercontent.com/gaheldev/Millisecond/refs/heads/main/data/icons/hicolor/scalable/apps/io.github.gaheldev.Millisecond.svg>
+</p>
+
+<p align='center'>
 Optimize your system for low latency audio.
 </p>
 
@@ -51,6 +55,9 @@ meson install -C build/
 ```
 
 # 🧑‍🤝‍🧑 Contributions
-It would be lovely to get icon contributions that follow [gnome's standard](https://developer.gnome.org/hig/guidelines/app-icons.html)  to be able to distribute the app. \
-Check out [issue #1](https://github.com/gaheldev/Millisecond/issues/1)
+Pull requests and suggestions are very welcome.\
+If something doesn't work, please open issues.\
+If you'd like to contribute to the `rtcqs.py` script, please open a pr upstream to [rtcqs](https://codeberg.org/rtcqs/rtcqs). 
+
+- icon by [Jakub Steiner](https://github.com/jimmac) 
 
