@@ -5,17 +5,12 @@
     "sdk" : "org.gnome.Sdk",
     "command" : "millisecond",
     "finish-args" : [
-        "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=host",
-        "--filesystem=host-etc",
         "--filesystem=/boot",
         "--filesystem=/sys",
-        "--device=all",
-        "--filesystem=/proc:ro",
-	"--talk-name=org.freedesktop.Flatpak"
+        "--device=all"
     ],
     "cleanup" : [
         "/include",
