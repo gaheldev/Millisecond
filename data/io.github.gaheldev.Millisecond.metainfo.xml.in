@@ -63,6 +63,15 @@
   </screenshots>
 
   <releases>
+    <release version="0.2.0" date="2025-10-14">
+      <description translate="no">
+        <p>Release description</p>
+        <ul>
+          <li>Upgrade to gnome 49</li>
+          <li>Remove unnecessary flatpak permissions</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.2" date="2025-10-12">
       <description translate="no">
         <p>Release description</p>
