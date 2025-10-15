@@ -29,12 +29,16 @@ In future releases, I intend to allow running fixes from the app whenever possib
 
 # 🛠️ Installation
 
+>[!NOTE]
+> some minor functionnalities may not be available in the flatpak release
+
+### From flathub (recommended)
+
+Install from [flathub's website](https://flathub.org/en/apps/io.github.gaheldev.Millisecond).
+
 ### From package releases
 Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04) or flatpak release. \
 If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
-
->[!NOTE]
-> some minor functionnalities may not be available in the flatpak release
 
 ### Manual installation
 
