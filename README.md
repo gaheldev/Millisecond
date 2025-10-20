@@ -40,6 +40,12 @@ Install from [flathub's website](https://flathub.org/en/apps/io.github.gaheldev.
 Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04) or flatpak release. \
 If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
 
+### From repositories
+
+| Distribution | Maintainer | Status |
+|---|---|---|
+| [openSUSE/GeekosDaw](https://software.opensuse.org//download.html?project=multimedia%3Aproaudio&package=millisecond) | @edogawa23 | unknown |
+
 ### Manual installation
 
 You'll need to install dev dependencies first, for reference on Ubuntu:
@@ -62,6 +68,7 @@ meson install -C build/
 Please open issues or submit a pull request if something doesn't work.\
 Modifications to the `rtcqs.py` script should preferably be submitted upstream to [rtcqs](https://codeberg.org/rtcqs/rtcqs). 
 
+For packagers: please create an issue or open a pr to add the package to the [repositories section](#from-repositories)
 
 ### Acknowledgements
 - icons by [Jakub Steiner](https://github.com/jimmac) 
