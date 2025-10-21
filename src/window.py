@@ -20,7 +20,7 @@
 from gi.repository import Adw, Gtk, GObject, GLib, Gio
 
 from .rtcqs import Rtcqs
-from .diagnostic import DiagnosticRow
+from .diagnostic import DiagnosticRow, DiagnosticStatus
 # from .rtfix import SwappinessDialog
 from .utils import is_flatpak
 
@@ -97,11 +97,11 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.user_group = Adw.PreferencesGroup()
         self.user_group.set_title("User")
 
-        self.group_diagnostic_row = DiagnosticRow(self, self.rtcqs, "audio_group", "#audio_group")
+        self.group_diagnostic_row = DiagnosticRow(self, self.rtcqs, "audio_group", DiagnosticStatus.Required,"#audio_group")
         self.group_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.user_group.add(self.group_diagnostic_row)
 
-        self.rt_prio_diagnostic_row = DiagnosticRow(self, self.rtcqs, "rt_prio", "#limitsconfaudioconf")
+        self.rt_prio_diagnostic_row = DiagnosticRow(self, self.rtcqs, "rt_prio", DiagnosticStatus.Required, "#limitsconfaudioconf")
         self.rt_prio_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.user_group.add(self.rt_prio_diagnostic_row)
 
@@ -110,17 +110,17 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.cpu_group = Adw.PreferencesGroup()
         self.cpu_group.set_title("CPU")
 
-        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", "#cpu_frequency_scaling")
+        self.governor_diagnostic_row = DiagnosticRow(self, self.rtcqs, "governor", DiagnosticStatus.Unoptimized, "#cpu_frequency_scaling")
         self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.governor_diagnostic_row)
 
-        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", "#simultaneous_multithreading")
-        self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.cpu_group.add(self.smt_diagnostic_row)
-
-        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", "#quality_of_service_interface")
+        self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management", DiagnosticStatus.Unoptimized, "#quality_of_service_interface")
         self.power_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.power_diagnostic_row)
+
+        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", DiagnosticStatus.Optional, "#simultaneous_multithreading")
+        self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+        self.cpu_group.add(self.smt_diagnostic_row)
 
         # Kernel diagnostics
 
@@ -128,19 +128,20 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.kernel_group.set_title("Kernel")
 
         if self.kernel_config_found:
-            self.timers_diagnostic_row = DiagnosticRow(self, self.rtcqs, "high_res_timers", "#installing_a_real-time_kernel")
+            self.timers_diagnostic_row = DiagnosticRow(self, self.rtcqs, "high_res_timers", DiagnosticStatus.Required, "#installing_a_real-time_kernel")
             self.timers_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.kernel_group.add(self.timers_diagnostic_row)
 
-            self.tickless_diagnostic_row = DiagnosticRow(self, self.rtcqs, "tickless", "#installing_a_real-time_kernel")
+            self.tickless_diagnostic_row = DiagnosticRow(self, self.rtcqs, "tickless", DiagnosticStatus.Required, "#installing_a_real-time_kernel")
             self.tickless_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.kernel_group.add(self.tickless_diagnostic_row)
 
-            self.preempt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "preempt_rt", "#do_i_really_need_a_real-time_kernel")
+            self.preempt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "preempt_rt", DiagnosticStatus.Required, "#do_i_really_need_a_real-time_kernel")
             self.preempt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.kernel_group.add(self.preempt_diagnostic_row)
 
             self.mitigations_diagnostic_row = DiagnosticRow(self, self.rtcqs, "mitigations",
+                                                            DiagnosticStatus.Optional,
                                                             wiki_anchor="#disabling_spectre_and_meltdown_mitigations",
                                                             subtitle="Dangerous optimization")
             self.mitigations_diagnostic_row.updated.connect(self._on_diagnostic_updated)
@@ -154,17 +155,17 @@ class MillisecondWindow(Adw.ApplicationWindow):
 
         # FIXME: make swappiness fix more reliable on recent ubuntu
         # self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf", SwappinessDialog())
-        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", "#sysctlconf")
+        self.swap_diagnostic_row = DiagnosticRow(self, self.rtcqs, "swappiness", DiagnosticStatus.Unoptimized, "#sysctlconf")
         self.swap_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.swap_diagnostic_row)
 
         # FIXME: filesystem analysis from flatpak build yields weird results
         if not is_flatpak():
-            self.filesystems_diagnostic_row = DiagnosticRow(self, self.rtcqs, "filesystems", "#filesystems")
+            self.filesystems_diagnostic_row = DiagnosticRow(self, self.rtcqs, "filesystems", DiagnosticStatus.Optional, "#filesystems")
             self.filesystems_diagnostic_row.updated.connect(self._on_diagnostic_updated)
             self.io_group.add(self.filesystems_diagnostic_row)
 
-        self.irqs_diagnostic_row = DiagnosticRow(self, self.rtcqs, "irqs")
+        self.irqs_diagnostic_row = DiagnosticRow(self, self.rtcqs, "irqs", DiagnosticStatus.Unoptimized)
         self.irqs_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.io_group.add(self.irqs_diagnostic_row)
 

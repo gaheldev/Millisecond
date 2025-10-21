@@ -22,9 +22,10 @@ from enum import Enum
 
 
 class DiagnosticStatus(Enum):
-    Required = 0 # unused for the moment
+    Required = 0
     Unoptimized = 1
-    Optimized = 2
+    Optional = 2
+    Optimized = 3
 
 
 class DiagnosticRow(Adw.ExpanderRow):
@@ -32,13 +33,22 @@ class DiagnosticRow(Adw.ExpanderRow):
 
     updated = GObject.Signal('updated')
 
-    def __init__(self, root_window: Adw.ApplicationWindow, cqs, check_name: str, wiki_anchor: str|None=None, autofix_dialog: Adw.Dialog|None=None, subtitle: str|None=None, **kwargs):
+    def __init__(self,
+                 root_window: Adw.ApplicationWindow,
+                 cqs,
+                 check_name: str,
+                 bad_diagnosis_importance: DiagnosticStatus=DiagnosticStatus.Unoptimized,
+                 wiki_anchor: str|None=None,
+                 autofix_dialog: Adw.Dialog|None=None,
+                 subtitle: str|None=None,
+                 **kwargs):
         super().__init__(**kwargs)
 
         self.root_window = root_window
         self.rtcqs = cqs
         self.check_name = check_name
         self.wiki_anchor = wiki_anchor
+        self.bad_diagnosis_importance = bad_diagnosis_importance
 
         if autofix_dialog is not None:
             autofix_dialog.fixing.connect(self.on_fixing)
@@ -76,7 +86,7 @@ class DiagnosticRow(Adw.ExpanderRow):
     def status(self) -> DiagnosticStatus:
         if self.rtcqs.status[self.check_name]:
             return DiagnosticStatus.Optimized
-        return DiagnosticStatus.Unoptimized
+        return self.bad_diagnosis_importance
 
     def title(self) -> str:
         return self.rtcqs.headline[self.check_name]
@@ -106,6 +116,7 @@ class DiagnosticRow(Adw.ExpanderRow):
 
 class StatusIcon(Gtk.Image):
     ok_icon = "selection-mode-symbolic"
+    optional_icon = "info-outline-symbolic"
     warning_icon = "dialog-warning-symbolic"
     important_icon = "emblem-important-symbolic"
 
@@ -114,14 +125,19 @@ class StatusIcon(Gtk.Image):
         self.set_status(status)
 
     def set_status(self, status: DiagnosticStatus) -> None:
-        [self.remove_css_class(s) for s in ["warning", "success"]]
+        [self.remove_css_class(s) for s in ["warning", "success", "error"]]
         match status:
             case DiagnosticStatus.Required:
-                raise NotImplementedError
+                self.set_from_icon_name(self.important_icon)
+                self.add_css_class("error")
+                self.set_tooltip_text("Required for lower latencies")
             case DiagnosticStatus.Unoptimized:
                 self.set_from_icon_name(self.warning_icon)
                 self.add_css_class("warning")
                 self.set_tooltip_text("Unoptimized")
+            case DiagnosticStatus.Optional:
+                self.set_from_icon_name(self.optional_icon)
+                self.set_tooltip_text("Optional - may or may not provide gains")
             case DiagnosticStatus.Optimized:
                 self.set_from_icon_name(self.ok_icon)
                 self.add_css_class("success")
@@ -161,13 +177,11 @@ class FixButton(Gtk.Button):
         [self.remove_css_class(s) for s in ["accent", "dimmed"]]
         self.set_visible(self.fix_exists)
         match status:
-            case DiagnosticStatus.Required:
-                raise NotImplementedError
             case DiagnosticStatus.Optimized:
                 self.set_tooltip_text("nothing to do")
                 self.set_sensitive(False)
                 self.add_css_class("dimmed")
-            case DiagnosticStatus.Unoptimized:
+            case _:
                 if self.fix_exists:
                     self.set_tooltip_text("run fix")
                     self.set_sensitive(True)
