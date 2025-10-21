@@ -136,7 +136,7 @@ class WikiButton(Gtk.LinkButton):
         self.remove_css_class("link") # make the button white
         self.set_margin_top(8)
         self.set_margin_bottom(8)
-        self.set_icon_name("dialog-question-symbolic")
+        self.set_icon_name("external-link-symbolic")
 
         if wiki_link is not None:
             self.set_uri(wiki_link)
