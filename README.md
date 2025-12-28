@@ -30,21 +30,17 @@ In future releases, I intend to allow running fixes from the app whenever possib
 # 🛠️ Installation
 
 >[!NOTE]
-> some minor functionnalities may not be available in the flatpak release
+> flatpak is recommended although some minor functionnalities may not be available in the flatpak release
 
-### From flathub (recommended)
+<a href="https://flathub.org/apps/details/io.github.gaheldev.Millisecond"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" width="300"/></a>
 
-Install from [flathub's website](https://flathub.org/en/apps/io.github.gaheldev.Millisecond).
+### From repositories
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/millisecond.svg)](https://repology.org/project/millisecond/versions)
 
 ### From package releases
 Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04) or flatpak release. \
 If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
-
-### From repositories
-
-| Distribution | Maintainer | Status |
-|---|---|---|
-| [openSUSE/GeekosDaw](https://software.opensuse.org//download.html?project=multimedia%3Aproaudio&package=millisecond) | @edogawa23 | unknown |
 
 ### Manual installation
 
