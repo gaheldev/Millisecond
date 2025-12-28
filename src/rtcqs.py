@@ -168,6 +168,26 @@ class Rtcqs:
 
         self.format_output(check)
 
+
+    def get_kernel_config_path(self) -> str:
+        kernel_release = self.kernel['release']
+        possible_paths = [
+            "/proc/config.gz",
+            f"/boot/config-{kernel_release}" + k.kernelRelease,
+            f"/usr/src/linux-{kernel_release}/.config",
+            "/usr/src/linux/.config",
+            f"/usr/lib/modules/{kernel_release}/config",
+            f"/usr/lib/ostree-boot/config-{kernel_release}",
+            f"/usr/lib/kernel/config-{kernel_release}",
+            f"/usr/src/linux-headers-{kernel_release}/.config",
+            f"/lib/modules/{kernel_release}/build/.config",
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                return path
+        return ""
+
+
     def kernel_config_check(self):
         check = "kernel_config"
         self.headline[check] = "Kernel Configuration"
@@ -176,23 +196,25 @@ class Rtcqs:
         with open("/proc/cmdline", "r") as f:
             self.kernel["cmdline"] = f.readline().strip().split()
 
-        if os.path.exists("/proc/config.gz"):
+        self.status[check] = False
+        self.output[check] = "Could not find kernel configuration."
+
+        kernel_config_path = self.get_kernel_config_path()
+        if kernel_config_path:
             self.status[check] = True
             self.output[check] = "Valid kernel configuration found."
-            with gzip.open("/proc/config.gz", "r") as f:
-                self.kernel["config"] = [
-                    line.strip().decode() for line in f.readlines()]
-        elif os.path.exists(f"/boot/config-{self.kernel['release']}"):
-            self.status[check] = True
-            self.output[check] = "Valid kernel configuration found."
-            with open(f"/boot/config-{self.kernel['release']}", "r") as f:
-                self.kernel["config"] = [
-                    line.strip() for line in f.readlines()]
-        else:
-            self.status[check] = False
-            self.output[check] = "Could not find kernel configuration."
+
+            if kernel_config_path.endswith('.gz'):
+                with gzip.open(kernel_config_path, "r") as f:
+                    self.kernel["config"] = [
+                        line.strip().decode() for line in f.readlines()]
+            else:
+                with open(kernel_config_path, "r") as f:
+                    self.kernel["config"] = [
+                        line.strip() for line in f.readlines()]
 
         self.format_output(check)
+
 
     def high_res_timers_check(self):
         check = "high_res_timers"
