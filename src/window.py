@@ -17,12 +17,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gtk, GObject, GLib, Gio
+from gi.repository import Adw, Gtk, GObject, GLib, Gio, Gdk
 
 from .rtcqs import Rtcqs
 from .diagnostic import DiagnosticRow, DiagnosticStatus
 # from .rtfix import SwappinessDialog
-from .utils import is_flatpak
+from .utils import is_flatpak, is_distribution_nixos
 
 @Gtk.Template(resource_path='/io/github/gaheldev/Millisecond/window.ui')
 class MillisecondWindow(Adw.ApplicationWindow):
@@ -73,6 +73,15 @@ class MillisecondWindow(Adw.ApplicationWindow):
             self.kernel_banner.set_revealed(True)
             self.kernel_banner.add_css_class("error")
             self.main_box.append(self.kernel_banner)
+
+        # banner info with NixOS dedicated doc link
+        if is_distribution_nixos():
+            self.nixos_banner = Adw.Banner()
+            self.nixos_banner.set_title("NixOS requires specific configuration: please refer to the dedicated documentation.")
+            self.nixos_banner.set_revealed(True)
+            self.nixos_banner.set_button_label("open doc")
+            self.nixos_banner.connect("button-clicked", self._on_banner_button_clicked)
+            self.main_box.append(self.nixos_banner)
 
         self.preferences_page = Adw.PreferencesPage()
 
@@ -227,6 +236,10 @@ class MillisecondWindow(Adw.ApplicationWindow):
         dialog.set_close_response("ok")
 
         dialog.present()
+
+    def _on_banner_button_clicked(self, banner):
+        doc_link = "https://github.com/gaheldev/Millisecond/tree/main//doc/nixos.md"
+        Gtk.show_uri(None, doc_link, Gdk.CURRENT_TIME)
 
     def refresh(self):
         self.rtcqs.main()

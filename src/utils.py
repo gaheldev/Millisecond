@@ -25,3 +25,16 @@ def is_flatpak():
     Returns True if in Flatpak, False otherwise.
     """
     return os.path.exists('/.flatpak-info')
+
+
+def is_distribution_nixos():
+    os_release_path = '/etc/os-release'
+
+    if is_flatpak():
+        os_release_path = '/run/host/etc/os-release'
+
+    with open(os_release_path) as f:
+        for line in f:
+            if 'nixos' in line.lower():
+                return True
+    return False
