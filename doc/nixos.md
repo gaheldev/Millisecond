@@ -1,4 +1,4 @@
-# Simple configuration: Musnix
+# Simple configuration
 
  Adding [musnix](https://github.com/musnix/musnix/) to your configuration (possibly also as a flake) will result in most bottlenecks being resolved:
 
@@ -15,9 +15,9 @@
 }
 ```
 
-# Advanced configuration: Individual modules
+# Advanced configuration
 
-In case you want to have more fine grained control over each setting being applied.
+Set up individual modules in case you want to have more fine grained control over each setting being applied.
 
 ### Group Limits & RT Priorities
 
