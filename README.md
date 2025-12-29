@@ -64,8 +64,6 @@ meson install -C build/
 Please open issues or submit a pull request if something doesn't work.\
 Modifications to the `rtcqs.py` script should preferably be submitted upstream to [rtcqs](https://codeberg.org/rtcqs/rtcqs). 
 
-For packagers: please create an issue or open a pr to add the package to the [repositories section](#from-repositories)
-
 ### Acknowledgements
-- icons by [Jakub Steiner](https://github.com/jimmac) 
-
+- icons by [Jakub Steiner](https://github.com/jimmac)
+- NixOS doc by [@backtail](https://github.com/backtail)
