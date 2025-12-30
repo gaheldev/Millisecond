@@ -122,7 +122,7 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.governor_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.governor_diagnostic_row)
 
-        self.cpu_group.add(self.smt_diagnostic_row)
+        self.cpu_group.add(self.governor_diagnostic_row)
 
         self.power_diagnostic_row = DiagnosticRow(self, self.rtcqs, "power_management",
                                                   DiagnosticStatus.Unoptimized,
