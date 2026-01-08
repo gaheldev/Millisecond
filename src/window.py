@@ -118,9 +118,10 @@ class MillisecondWindow(Adw.ApplicationWindow):
         self.power_diagnostic_row.updated.connect(self._on_diagnostic_updated)
         self.cpu_group.add(self.power_diagnostic_row)
 
-        self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", DiagnosticStatus.Optional, "#simultaneous_multithreading")
-        self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
-        self.cpu_group.add(self.smt_diagnostic_row)
+        if self.rtcqs.is_smt_supported:
+            self.smt_diagnostic_row = DiagnosticRow(self, self.rtcqs, "smt", DiagnosticStatus.Optional, "#simultaneous_multithreading")
+            self.smt_diagnostic_row.updated.connect(self._on_diagnostic_updated)
+            self.cpu_group.add(self.smt_diagnostic_row)
 
         # Kernel diagnostics
 
