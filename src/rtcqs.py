@@ -39,6 +39,7 @@ class Rtcqs:
         self.kernel = {}
         self.output = {}
         self.status = {}
+        self.is_smt_supported = False
 
     def print_cli(self, message):
         if not self.gui_status:
@@ -105,6 +106,13 @@ class Rtcqs:
 
         self.format_output(check)
 
+    def detect_smt_support(self):
+        self.cpu_smt = 0
+        if os.path.exists("/sys/devices/system/cpu/smt/active"):
+            with open("/sys/devices/system/cpu/smt/active", "r") as f:
+                self.cpu_smt = int(f.readline().strip())
+                self.is_smt_supported = True
+
     def governor_check(self):
         check = "governor"
         self.headline[check] = "CPU Frequency Scaling"
@@ -114,10 +122,6 @@ class Rtcqs:
         cpu_list = []
         cpu_governor = {}
         bad_governor = 0
-
-        if os.path.exists("/sys/devices/system/cpu/smt/active"):
-            with open("/sys/devices/system/cpu/smt/active", "r") as f:
-                self.cpu_smt = int(f.readline().strip())
 
         for cpu_nr in range(cpu_count):
             governor_path = f"{cpu_dir}/cpu{cpu_nr}/cpufreq/scaling_governor"
@@ -161,6 +165,10 @@ class Rtcqs:
                 "when experiencing such spikes with 'echo off | sudo tee " \
                 "/sys/devices/system/cpu/smt/control'. See also " \
                 f"{self.wiki_url}{wiki_anchor}"
+        elif not self.is_smt_supported:
+            self.status[check] = True
+            self.output[check] = "Simultaneous Multithreading (SMT, also " \
+                "called hyper-threading) is not supported."
         else:
             self.status[check] = True
             self.output[check] = "Simultaneous Multithreading (SMT, also " \
@@ -480,6 +488,7 @@ class Rtcqs:
         self.print_version()
         self.root_check()
         self.audio_group_check()
+        self.detect_smt_support()
         self.governor_check()
         self.smt_check()
         self.kernel_config_check()
