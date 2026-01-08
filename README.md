@@ -54,7 +54,7 @@ sudo apt install libgtk-4-dev libadwaita-1-dev python3-gi gir1.2-gtk-4.0 gir1.2-
 Then clone the repo and install:
 
 ```bash
-git clone git@github.com:gaheldev/Millisecond.git millisecond
+git clone https://github.com/gaheldev/Millisecond.git
 cd millisecond
 meson setup build/
 meson install -C build/
