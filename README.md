@@ -39,7 +39,7 @@ In future releases, I intend to allow running fixes from the app whenever possib
 [![Packaging status](https://repology.org/badge/vertical-allrepos/millisecond.svg)](https://repology.org/project/millisecond/versions)
 
 ### From package releases
-Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04) or flatpak release. \
+Install the [latest](https://github.com/gaheldev/Millisecond/releases/latest) deb (Ubuntu >= 24.04, amd64 only) or flatpak release. \
 If you need to install flatpak on your system, follow [flathub's instructions](https://flathub.org/setup).
 
 ### Manual installation
@@ -49,6 +49,7 @@ You'll need to install dev dependencies first, for reference on Ubuntu:
 sudo apt install meson ninja-build build-essential
 sudo apt install python3-all
 sudo apt install libgtk-4-dev libadwaita-1-dev python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 adwaita-icon-theme
+sudo apt install gettext
 ```
 
 Then clone the repo and install:
