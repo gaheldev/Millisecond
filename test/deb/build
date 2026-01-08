@@ -3,12 +3,33 @@
 
 set -e
 
-if [ "$#" -ne 1 ]; then
-	echo "Usage: $0 distro"
+if [ "$#" -lt 1 ]; then
+	echo "Usage: $0 distro [--platform PLATFORM] [--no-cache]"
 	exit 1
 fi
 
 distro=$1
 name=${distro}-millisecond
+platform=linux/amd64
 
-docker build --build-arg distro="$distro" --no-cache --network=host -t "${name}" .
+if [ "$#" -eq 3 ]; then
+	if [ "$2" == "--platform" ]; then
+		platform=$3
+		name=${name}-${platform//\//-}
+	else
+		echo "Usage: $0 distro [--platform ARCH]"
+		exit 1
+	fi
+fi
+
+# test if a parameter is --no-cache
+cache=""
+for arg in "$@"; do
+	if [ "$arg" == "--no-cache" ]; then
+		cache="--no-cache"
+	fi
+done
+
+echo "Building $name"
+docker build --build-arg distro="$distro" "$cache" --network=host --platform "${platform}" -t "${name}" .
+# docker build --build-arg distro="$distro"  --network=host --platform "${platform}" -t "${name}" .

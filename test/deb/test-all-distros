@@ -1,18 +1,44 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 test-all-distros path/to/deb"
+    echo "Usage: $0 test-all-distros path/to/deb [--no-cache]"
     exit 1
 fi
 
 deb=$1
 
-distributions=(
+cache=""
+if [ "$2" == "--no-cache" ]; then
+	cache="--no-cache"
+fi
+
+distributions_amd64=(
 	"ubuntu:24.04"
 	"debian:sid"
 )
 
-for distro in "${distributions[@]}"; do
-	./build "$distro"
-	./run $deb ${distro}-millisecond
+# arm64 deb is not ready yet
+distributions_arm64=(
+	# "ubuntu:24.04"
+)
+
+# if deb ends with amd64.deb -> build and run amd64 distributions
+# if deb ends with arm64.deb -> build and run arm64 distributions
+if [[ "$deb" == *"amd64.deb" ]]; then
+	distributions=("${distributions_amd64[@]}")
+	platform='linux/amd64'
+elif [[ "$deb" == *"arm64.deb" ]]; then
+	distributions=("${distributions_arm64[@]}")
+	platform='linux/arm64'
+else
+	echo "Error: deb file must end with amd64.deb or arm64.deb"
+	exit 1
+fi
+
+platform_short_name=${platform//\//-}
+
+for distribution in "${distributions[@]}"; do
+	name="${distribution}-millisecond-${platform_short_name}"
+	./build "${distribution}" --platform "$platform" "$cache"
+	./run $deb "${name}"
 done
