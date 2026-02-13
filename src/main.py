@@ -23,7 +23,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from gi.repository import Gtk, Gio, Adw
+from gi.repository import Gio, Adw, GLib
 from .window import MillisecondWindow
 
 
@@ -31,13 +31,35 @@ class MillisecondApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self, version='dev'):
-        super().__init__(application_id='io.github.gaheldev.Millisecond',
-                         flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
+        super().__init__(
+                application_id='io.github.gaheldev.Millisecond',
+                flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE
+        )
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('refresh', self.on_refresh_action, ['<primary>r'])
+        # TODO: also connect refresh_button to refresh action
         self.version = version
-        # TODO: connect refresh_button to refresh action
+        self.verbose = False
+
+        self.add_main_option(
+            'verbose',
+            ord('v'),
+            GLib.OptionFlags.NONE,
+            GLib.OptionArg.NONE,
+            'Enable verbose output',
+            None
+        )
+
+
+    def do_command_line(self, command_line):
+        options = command_line.get_options_dict()
+        options = options.end().unpack()
+        
+        self.verbose = 'verbose' in options
+        self.activate()
+        return 0
+
 
     def do_activate(self):
         """Called when the application is activated.
@@ -50,6 +72,7 @@ class MillisecondApplication(Adw.Application):
             win = MillisecondWindow(application=self)
         win.quit.connect(lambda *_: self.quit())
         win.present()
+
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
@@ -65,8 +88,10 @@ class MillisecondApplication(Adw.Application):
         about.set_translator_credits(_('translator-credits'))
         about.present(self.props.active_window)
 
+
     def on_refresh_action(self, *args):
         self.props.active_window.refresh()
+
 
     def create_action(self, name, callback, shortcuts=None):
         """Add an application action.
