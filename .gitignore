@@ -13,6 +13,7 @@ debian/tmp
 debian/*.substvars
 debian/*.debhelper.log
 debian/*/
+debian/debhelper-build-stamp
 
 NEW_VERSION
 
