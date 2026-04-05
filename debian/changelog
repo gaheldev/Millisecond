@@ -1,6 +1,8 @@
-millisecond (0.2.0) UNRELEASED; urgency=medium
+millisecond (0.2.1) UNRELEASED; urgency=medium
 
- * Upgrade to gnome 49
- * Remove unnecessary flatpak permissions
+ * Add different priority levels to diagnostics
+ * Use external link icon for wiki links
+ * Add custom NixOS documentation - contributed by @backtail
+ * Add verbose CLI option to print rtcqs output to terminal
 
- -- Gahel <music@gahel.fr>  Tue, 14 Oct 2025 14:56:42 +0200
+ -- Gahel <music@gahel.fr>  Mon, 06 Apr 2026 01:48:46 +0200

@@ -63,6 +63,17 @@
   </screenshots>
 
   <releases>
+    <release version="0.2.1" date="2026-04-06">
+      <description translate="no">
+        <p>Release description</p>
+        <ul>
+          <li>Add different priority levels to diagnostics</li>
+          <li>Use external link icon for wiki links</li>
+          <li>Add custom NixOS documentation - contributed by @backtail</li>
+          <li>Add verbose CLI option to print rtcqs output to terminal</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.0" date="2025-10-14">
       <description translate="no">
         <p>Release description</p>
