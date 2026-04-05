@@ -78,13 +78,13 @@ make test-deb
 
 ## TODO
 ### GUI
-- [ ] icons
+- [x] icons
 - [ ] update metainfo theme when icon is ready
-- [ ] make flatpak distributable
+- [x] make flatpak distributable
     - [x] bump flatpak version and changelog
     - [x] set up basic export
     - [x] properly require runner / system dependencies
-    - [ ] setup for flathub
+    - [x] setup for flathub
 
 - [ ] use homemade dimmed for older gnome versions
 - [ ] In-app explanations
@@ -95,7 +95,7 @@ make test-deb
     - [x] autofix button if autofix implemented
     - [x] info emoji for doc
     - [x] expandable area with rtcqs output
-- [ ] warning or error depending on importance of diagnostic
+- [x] warning or error depending on importance of diagnostic
 
 ### rtfix
 - [ ] autofix
