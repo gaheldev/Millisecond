@@ -1,6 +1,6 @@
 {
     "id" : "io.github.gaheldev.Millisecond",
-    "runtime" : "org.gnome.Sdk",
+    "runtime" : "org.gnome.Platform",
     "runtime-version" : "49",
     "sdk" : "org.gnome.Sdk",
     "command" : "millisecond",
@@ -8,8 +8,8 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=/boot",
-        "--filesystem=/sys",
+        "--filesystem=/boot:ro",
+        "--filesystem=/sys:ro",
         "--device=all"
     ],
     "cleanup" : [
