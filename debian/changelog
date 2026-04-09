@@ -1,8 +1,5 @@
-millisecond (0.2.1) UNRELEASED; urgency=medium
+millisecond (0.2.2) UNRELEASED; urgency=medium
 
- * Add different priority levels to diagnostics
- * Use external link icon for wiki links
- * Add custom NixOS documentation - contributed by @backtail
- * Add verbose CLI option to print rtcqs output to terminal
+ * Fix empty content window
 
- -- Gahel <music@gahel.fr>  Mon, 06 Apr 2026 01:48:46 +0200
+ -- Gahel <music@gahel.fr>  Fri, 10 Apr 2026 01:41:36 +0200
