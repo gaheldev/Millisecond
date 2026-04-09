@@ -33,8 +33,17 @@ def is_distribution_nixos():
     if is_flatpak():
         os_release_path = '/run/host/etc/os-release'
 
+    if not os.path.isfile(os_release_path):
+        print_red(f"Couldn't check if OS is NixOS, {os_release_path} is not a valid file or permissions are not granted to read it.")
+        return False
+
     with open(os_release_path) as f:
         for line in f:
             if 'nixos' in line.lower():
                 return True
     return False
+
+
+def print_red(s):
+    print("\033[91m" + s + "\033[00m")
+
