@@ -19,6 +19,7 @@
 
 import os
 
+
 def is_flatpak():
     """
     Detect if the current process is running inside a Flatpak sandbox.
@@ -27,20 +28,33 @@ def is_flatpak():
     return os.path.exists('/.flatpak-info')
 
 
+# This may fail in flatpak if os-release files are symlink,
+# where permissions of the linked file may not be granted.
 def is_distribution_nixos():
-    os_release_path = '/etc/os-release'
+    native_candidates = [
+        '/usr/lib/os-release',
+        '/etc/os-release',
+    ]
 
-    if is_flatpak():
-        os_release_path = '/run/host/etc/os-release'
+    flatpak_candidates = [
+        '/run/host/usr/lib/os-release',
+        '/run/host/etc/os-release',
+    ]
 
-    if not os.path.isfile(os_release_path):
-        print_red(f"Couldn't check if OS is NixOS, {os_release_path} is not a valid file or permissions are not granted to read it.")
-        return False
+    paths = flatpak_candidates if is_flatpak() else native_candidates
 
-    with open(os_release_path) as f:
-        for line in f:
-            if 'nixos' in line.lower():
-                return True
+    for path in paths:
+        try:
+            with open(path) as f:
+                for line in f:
+                    if 'nixos' in line.lower():
+                        return True
+                return False
+        except OSError:
+            continue
+
+    print_red(f"Couldn't check if OS is NixOS, {paths[0]} and {paths[1]} are not valid files or permissions are not granted to read them.")
+
     return False
 
 

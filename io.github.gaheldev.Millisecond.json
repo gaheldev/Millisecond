@@ -10,6 +10,7 @@
         "--socket=wayland",
         "--filesystem=/boot:ro",
         "--filesystem=/sys:ro",
+        "--filesystem=host-os:ro",
         "--device=all"
     ],
     "cleanup" : [
