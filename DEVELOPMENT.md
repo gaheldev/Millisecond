@@ -76,6 +76,13 @@ Install [docker](https://docs.docker.com/engine/install/) for testing and the fo
 make test-deb
 ```
 
+## Release
+
+Update the deb and flatpak manifest by bumping deb version with
+```bash
+make release
+```
+
 ## TODO
 ### GUI
 - [x] icons

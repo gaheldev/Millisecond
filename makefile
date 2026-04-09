@@ -36,7 +36,7 @@ release:
 	@echo "current version is: $(VERSION)"
 	@read -p "new version: " new_version; \
 		echo $$new_version > NEW_VERSION
-	@make bump-deb
+	@make update-changelog
 	@echo ====================================
 	@git status
 	@echo ====================================
@@ -45,6 +45,7 @@ release:
 	@git commit --amend
 	@git tag v$$(cat NEW_VERSION)
 	@rm NEW_VERSION
+	@make deb
 
 
 setup-deb: compile
@@ -55,10 +56,13 @@ setup-deb: compile
 	nvim debian/changelog
 
 
-bump-deb:
+update-changelog:
 	nvim data/io.github.gaheldev.Millisecond.metainfo.xml.in
 	dch -b --newversion "$(VERSION)" "Automated release of $(VERSION)"
 	nvim debian/changelog
+
+
+bump-deb: update-changelog
 	# actually build
 	dpkg-buildpackage -rfakeroot -us -uc
 	# move deb files from parent directory to build-aux/deb/
