@@ -90,3 +90,8 @@ flatpak:
 	flatpak-builder --user --repo=build-aux/flatpak/tmp-repo --force-clean --install-deps-from=flathub build-aux/flatpak/build/$(VERSION) io.github.gaheldev.Millisecond.json
 	flatpak build-bundle build-aux/flatpak/tmp-repo build-aux/flatpak/release/$(VERSION)/Millisecond.flatpak io.github.gaheldev.Millisecond --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
 	rm -r .flatpak-builder
+
+
+test-flatpak: flatpak
+	flatpak install build-aux/flatpak/release/$(VERSION)/Millisecond.flatpak
+	flatpak run --system io.github.gaheldev.Millisecond
