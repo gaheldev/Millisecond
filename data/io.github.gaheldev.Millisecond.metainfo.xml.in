@@ -63,6 +63,14 @@
   </screenshots>
 
   <releases>
+    <release version="0.2.3" date="2026-04-10">
+      <description translate="no">
+        <p>Release description</p>
+        <ul>
+          <li>Fix NixOS detection in flatpak build</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.2" date="2026-04-10">
       <description translate="no">
         <p>Release description</p>
