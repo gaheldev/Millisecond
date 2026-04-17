@@ -28,6 +28,8 @@ import re
 import gzip
 import resource
 
+from .utils import convert_path_to_flatpak_sandbox, is_flatpak
+
 
 class Rtcqs:
     def __init__(self):
@@ -183,6 +185,9 @@ class Rtcqs:
             f"/lib/modules/{kernel_release}/build/.config",
         ]
         for path in possible_paths:
+            if is_flatpak():
+                path = convert_path_to_flatpak_sandbox(path)
+                print(path)
             if os.path.exists(path):
                 return path
         return ""

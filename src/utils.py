@@ -28,6 +28,14 @@ def is_flatpak():
     return os.path.exists('/.flatpak-info')
 
 
+def convert_path_to_flatpak_sandbox(path: str) -> str:
+    sandboxed = ["/usr", "/etc", "/lib"]
+    for sandboxed_path_root in sandboxed:
+        if path.startswith(sandboxed_path_root):
+            return "/run/host" + path
+    return path
+
+
 # This may fail in flatpak if os-release files are symlink,
 # where permissions of the linked file may not be granted.
 def is_distribution_nixos():
