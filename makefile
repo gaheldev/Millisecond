@@ -94,7 +94,7 @@ flatpak:
 
 test-flatpak: flatpak
 	flatpak install --user build-aux/flatpak/release/$(VERSION)/Millisecond.flatpak
-	flatpak run io.github.gaheldev.Millisecond
+	flatpak run -v io.github.gaheldev.Millisecond -v
 
 
 lint:
