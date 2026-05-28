@@ -13,16 +13,11 @@ install_data(
 )
 
 install_data(
-    'external-link-symbolic.svg',
-    install_dir: get_option('datadir') / 'icons/hicolor/scalable/actions'
-)
-
-install_data(
-    'info-outline-symbolic.svg',
-    install_dir: get_option('datadir') / 'icons/hicolor/scalable/actions'
-)
-
-install_data(
-    'emblem-important-symbolic.svg',
-    install_dir: get_option('datadir') / 'icons/hicolor/scalable/actions'
+  'scalable/actions/external-link-symbolic.svg',
+  'scalable/actions/info-outline-symbolic.svg',
+  'scalable/actions/emblem-important-symbolic.svg',
+  'scalable/actions/selection-mode-symbolic.svg',
+  'scalable/actions/dialog-warning-symbolic.svg',
+  'scalable/actions/view-refresh-symbolic.svg',
+  install_dir: get_option('datadir') / 'icons/hicolor/scalable/actions'
 )
